@@ -54,19 +54,19 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="userorders.html">
+              <a class="nav-link active" href="userorders.php">
                 <span data-feather="file"></span>
                 Orders
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="userprofile.html">
+              <a class="nav-link" href="userprofile.php">
                 <span data-feather="users"></span>
                 Perfil
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="usermessages.html">
+              <a class="nav-link" href="usermessages.php">
                 <span data-feather="layers"></span>
                 Mensagens
               </a>

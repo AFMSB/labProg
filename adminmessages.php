@@ -7,19 +7,15 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Jekyll v4.1.1">
-  <title>Phone Store | User</title>
+  <title>Phone Store | Admin</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
 
   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
-        rel="stylesheet">
-
   <!-- Bootstrap core CSS -->
   <link href="css/admin.css" rel="stylesheet">
-  <link href="css/chat.css" rel="stylesheet">
 
   <style>
     .bd-placeholder-img {
@@ -60,21 +56,53 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="userorders.html">
+              <a class="nav-link" href="admin.php">
+                <span data-feather="home"></span>
+                Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="adminorders.php">
                 <span data-feather="file"></span>
-                Orders
+                Encomendas
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="userprofile.html">
+              <a class="nav-link" href="adminproducts.php">
+                <span data-feather="shopping-cart"></span>
+                Produtos
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="adminclients.php">
                 <span data-feather="users"></span>
-                Perfil
+                Clientes
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="usermessages.html">
+              <a class="nav-link active" href="adminmessages.php">
                 <span data-feather="layers"></span>
                 Mensagens
+              </a>
+            </li>
+          </ul>
+
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Paginas</span>
+            <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+              <span data-feather="plus-circle"></span>
+            </a>
+          </h6>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Index
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file-text"></span>
+                Produtos
               </a>
             </li>
           </ul>
@@ -83,62 +111,42 @@
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
         <div class="container-fluid">
-          <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="images/icons/admin.jpg" alt="sunil">
+          <div class="list-group">
+            <a href="adminmessagesconversation.php" class="list-group-item list-group-item-action active">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
               </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test which is a new approach to have all
-                    solutions</p>
-                  <span class="time_date"> 11:01 AM | June 9</span>
-                </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+                  blandit.</p>
+                  <span class="badge badge-danger badge-pill">14</span>
               </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Test which is a new approach to have all
-                  solutions</p>
-                <span class="time_date"> 11:01 AM | June 9</span>
+            </a>
+            <a href="adminmessagesconversation.php" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
               </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="images/icons/admin.jpg" alt="sunil">
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+                  blandit.</p>
+                  <span class="badge badge-danger badge-pill">14</span>
               </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>Test, which is a new approach to have</p>
-                  <span class="time_date"> 11:01 AM | Yesterday</span>
-                </div>
+            </a>
+            <a href="adminmessagesconversation.php" class="list-group-item list-group-item-action">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">List group item heading</h5>
+                <small>3 days ago</small>
               </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-                <p>Apollo University, Delhi, India Test</p>
-                <span class="time_date"> 11:01 AM | Today</span>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius
+                  blandit.</p>
+                  <span class="badge badge-danger badge-pill">14</span>
               </div>
-            </div>
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="images/icons/admin.jpg" alt="sunil">
-              </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p>We work directly with our designers and suppliers,
-                    and sell direct to you, which means quality, exclusive
-                    products, at a price anyone can afford.</p>
-                  <span class="time_date"> 11:01 AM | Today</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="type_msg" style="margin-top: 10vh;">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message">
-              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-            </div>
+            </a>
           </div>
         </div>
-
 
       </main>
     </div>
@@ -147,7 +155,6 @@
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
-  <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   <script src="js/admin.js"></script>

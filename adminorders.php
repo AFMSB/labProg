@@ -55,30 +55,30 @@
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">
+                    <a class="nav-link" href="admin.php">
                         <span data-feather="home"></span>
                         Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminorders.html">
+                    <a class="nav-link active" href="adminorders.php">
                         <span data-feather="file"></span>
                         Encomendas
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminproducts.html">
+                    <a class="nav-link" href="adminproducts.php">
                         <span data-feather="shopping-cart"></span>
                         Produtos
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="adminclients.html">
+                    <a class="nav-link" href="adminclients.php">
                         <span data-feather="users"></span>
                         Clientes
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminmessages.html">
+                    <a class="nav-link" href="adminmessages.php">
                         <span data-feather="layers"></span>
                         Mensagens
                     </a>
@@ -111,8 +111,7 @@
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
 
-
-        <h2>Clientes</h2>
+        <h2>Encomendas</h2>
         <div class="table-responsive">
           <table class="table table-striped table-sm">
             <thead>
@@ -148,5 +147,4 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-
 </html>

@@ -60,30 +60,30 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="admin.html">
+              <a class="nav-link" href="admin.php">
                 <span data-feather="home"></span>
                 Dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="adminorders.html">
+              <a class="nav-link" href="adminorders.php">
                 <span data-feather="file"></span>
                 Encomendas
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="adminproducts.html">
+              <a class="nav-link" href="adminproducts.php">
                 <span data-feather="shopping-cart"></span>
                 Produtos
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="adminclients.html">
+              <a class="nav-link" href="adminclients.php">
                 <span data-feather="users"></span>
                 Clientes
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="adminmessages.html">
+              <a class="nav-link active" href="adminmessages.php">
                 <span data-feather="layers"></span>
                 Mensagens
               </a>

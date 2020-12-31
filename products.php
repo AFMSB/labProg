@@ -36,7 +36,7 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="index.html">Phone Store</a>
+      <a class="navbar-brand" href="index.php">Phone Store</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -44,16 +44,16 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link" href="index.php">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html#services">Serviços</a>
+            <a class="nav-link" href="index.php#services">Serviços</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="products.html">Produtos</a>
+            <a class="nav-link" href="products.php">Produtos</a>
           </li>
         </ul>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.html"
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.php"
             style="text-decoration:none;color:white;">Entrar</a></button>
       </div>
     </nav>
@@ -117,7 +117,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -132,7 +132,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -147,7 +147,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -163,7 +163,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -178,7 +178,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -193,7 +193,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -208,7 +208,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -223,7 +223,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>
@@ -238,7 +238,7 @@
                 content. This content is a little bit longer.</p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                  <a href="product.html" class="btn btn-primary" role="button">Ver Mais</a>
+                  <a href="product.php" class="btn btn-primary" role="button">Ver Mais</a>
                 </div>
                 <div class="price">399.99€</div>
               </div>

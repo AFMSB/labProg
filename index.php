@@ -40,7 +40,7 @@
 <body>
   <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="index.html">Phone Store</a>
+      <a class="navbar-brand" href="index.php">Phone Store</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -48,16 +48,16 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html#services">Serviços</a>
+            <a class="nav-link" href="index.php#services">Serviços</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="products.html">Produtos</a>
+            <a class="nav-link" href="products.php">Produtos</a>
           </li>
         </ul>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.html" style="text-decoration:none;color:white;" >Entrar</a></button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.php" style="text-decoration:none;color:white;" >Entrar</a></button>
       </div>
     </nav>
   </header>
@@ -104,7 +104,7 @@
           <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies
             vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus
             magna.</p>
-          <p><a class="btn btn-secondary" href="product.html" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="product.php" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img src="images/icons/serviceRepair.png" class="img-fluid" alt="Responsive image">
@@ -112,7 +112,7 @@
           <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras
             mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris
             condimentum nibh.</p>
-          <p><a class="btn btn-secondary" href="product.html" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="product.php" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
           <img src="images/icons/serviceSell.png" class="img-fluid" alt="Responsive image">
@@ -120,7 +120,7 @@
           <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta
             felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum
             massa justo sit amet risus.</p>
-          <p><a class="btn btn-secondary" href="product.html" role="button">View details &raquo;</a></p>
+          <p><a class="btn btn-secondary" href="product.php" role="button">View details &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
     </section>

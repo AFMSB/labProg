@@ -1,0 +1,78 @@
+CREATE TABLE users (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `nome` varchar(50) NOT NULL,
+  `email` varchar(100) UNIQUE NOT NULL,
+  `morada` varchar(30) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `nif` varchar(50) UNIQUE NOT NULL,
+  `cargo` varchar(50) NOT NULL DEFAULT 'USER',
+  `pontos` int DEFAULT 0,
+   data DATETIME DEFAULT CURRENT_TIMESTAMP  
+);
+
+CREATE TABLE produtos (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `nome` varchar(50) NOT NULL,
+  `preco` float NOT NULL,
+  `quantidade` int NOT NULL DEFAULT 0,
+  `armazenamento` int NOT NULL,
+  `CATEGORIA` varchar(50) NOT NULL
+);
+
+CREATE TABLE especificacoes (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `product_id` int,
+  FOREIGN KEY(product_id) REFERENCES produtos(id),
+  `nome` varchar(50) NOT NULL,
+  `especificacao` varchar(50) NOT NULL
+);
+
+CREATE TABLE mensagens (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `emmisor_id` int,
+  FOREIGN KEY(emmisor_id) REFERENCES users(id),
+  `recetor_id` int,
+  FOREIGN KEY(recetor_id) REFERENCES users(id),
+  `mensagem` varchar(200) NOT NULL,
+   data DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE encomenda_produto (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `produto_id` int,
+  FOREIGN KEY(produto_id) REFERENCES produtos(id),
+  `user_id` int,
+  FOREIGN KEY(user_id) REFERENCES users(id),
+  `quantidade` int NOT NULL,
+  `preco` float NOT NULL,
+  `voucher_id` int,
+  FOREIGN KEY(voucher_id) REFERENCES vouchers(id),
+  `encomenda_id` int,
+  FOREIGN KEY(encomenda_id) REFERENCES encomenda(id),
+  `estado` varchar(50) NOT NULL
+);
+
+CREATE TABLE encomenda (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `total` float NOT NULL,
+  data DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `estado` varchar(50) NOT NULL,
+  `morada` varchar(100) NOT NULL,
+  `destinatario` varchar(50) NOT NULL,
+  data_pagamento DATETIME
+);
+
+CREATE TABLE vouchers (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `categoria` varchar(50) NOT NULL,
+  `desconto` float NOT NULL,
+  `nome` varchar(50) NOT NULL,
+  `limite` int NOT NULL
+);
+
+CREATE TABLE imagens (
+  `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `produto_id` int,
+  FOREIGN KEY(produto_id) REFERENCES produtos(id),
+  `caminho` varchar(300) NOT NULL
+);

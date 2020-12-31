@@ -7,13 +7,13 @@
   <meta name="description" content="">
   <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
   <meta name="generator" content="Jekyll v4.1.1">
-  <title>Phone Store | Checkout</title>
+  <title>Phone Store | Register</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
 
   <!-- Bootstrap core CSS -->
-  <link href="css/checkout.css" rel="stylesheet">
+  <link href="css\register.css" rel="stylesheet">
 
   <style>
     .bd-placeholder-img {
@@ -36,7 +36,7 @@
 <body class="bg-light">
   <header>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="index.html">Phone Store</a>
+      <a class="navbar-brand" href="index.php">Phone Store</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
         aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -44,83 +44,84 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html">Inicio</a>
+            <a class="nav-link" href="index.php">Inicio</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="index.html#services">Serviços</a>
+            <a class="nav-link" href="index.php#services">Serviços</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="products.html">Produtos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="sell.html">Vender</a>
+            <a class="nav-link" href="products.php">Produtos</a>
           </li>
         </ul>
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.html" style="text-decoration:none;color:white;" >Entrar</a></button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.php" style="text-decoration:none;color:white;" >Entrar</a></button>
       </div>
     </nav>
   </header>
-  <div class="container" style="padding-top:5vh;">
+  <div class="container" style="padding-top: 7vh;">
     <div class="py-5 text-center">
-   
-      <img class="d-block mx-auto mb-4" src="images/icons/logo.png" alt="" width="200" height="200">
-      <h2>Checkout </h2>
-      <p class="lead">Confirmação de compras</p>
+      <img class="d-block mx-auto mb-4" src="images\icons\logo.png" alt="" width="200" height="200">
+      <h2>Registo</h2>
+      <p class="lead">Cria a tua conta</p>
     </div>
 
     <div class="row">
-      <div class="col-md-4 order-md-2 mb-4">
-        <h4 class="d-flex justify-content-between align-items-center mb-3">
-          <span class="text-muted">Carrinho</span>
-          <span class="badge badge-secondary badge-pill">3</span>
-        </h4>
-        <ul class="list-group mb-3">
-          <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-              <h6 class="my-0">Product name</h6>
-              <small class="text-muted">Brief description</small>
+      <div class="col-md-2"></div>
+      <div class="col-md-8 order-md-1">
+        <form class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Primeiro Nome*</label>
+              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Primeiro nome obrigatorio!
+              </div>
             </div>
-            <span class="text-muted">$12</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-              <h6 class="my-0">Second product</h6>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-condensed">
-            <div>
-              <h6 class="my-0">Third item</h6>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <span class="text-muted">$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between bg-light">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">-$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
-            <strong>$20</strong>
-          </li>
-        </ul>
-
-        <form class="card p-2">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Codigo">
-            <div class="input-group-append">
-              <button type="submit" class="btn btn-secondary">Aplicar</button>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Ultimo nome*</label>
+              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                ULtimo nome obrigatorio!
+              </div>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="col-md-8 order-md-1">
-        <h4 class="mb-3">Billing address</h4>
-        <form class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Password*</label>
+              <input type="password" class="form-control" id="firstName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Password obrigatoria!
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Confirmar Password*</label>
+              <input type="password" class="form-control" id="lastName" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                As palavras passe não são iguais!
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="username">Utilizador*</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">@</span>
+              </div>
+              <input type="text" class="form-control" id="username" placeholder="Username" required>
+              <div class="invalid-feedback" style="width: 100%;">
+                Utilizador obrigatorio!
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email">Email* </label>
+            <input type="email" class="form-control" id="email" placeholder="examplo@examplo.com" required>
+            <div class="invalid-feedback">
+              Insira um email valido!
+            </div>
+          </div>
+
           <div class="mb-3">
             <label for="address">Morada principal</label>
             <input type="text" class="form-control" id="address" placeholder="Rua Exemplo" required>
@@ -150,7 +151,7 @@
             <div class="col-md-4 mb-3">
               <label for="state">Distrito</label>
               <select class="custom-select d-block w-100" id="state" required>
-                <option value="">EScolha...</option>
+                <option value="">Escolha...</option>
                 <option>Porto</option>
                 <option>Lisboa</option>
               </select>
@@ -167,13 +168,14 @@
             </div>
           </div>
           <hr class="mb-4">
-          <a href="https://stripe.com/docs/api?lang=php">Stripe</a>
-          <hr class="mb-4">
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Confirmar</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Submeter</button>
+          <br>
+          <p>Já tens conta? <a href="login.php">Entra por aqui!!</a></p>
+          <br> <br>
         </form>
-        <br><br>
       </div>
-    </div>  
+    </div>
+
     <footer class="container-fluid">
       <p class="float-right"><a href="#">Voltar ao inicio</a></p>
       <p>&copy; 2020 Phone Store, LDA. &middot; <a href="#">Privacidade</a> &middot; <a href="#">Termos</a></p>
@@ -184,10 +186,10 @@
     crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
   <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js\checkout.js"></script>
+  <script src="js\register.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-  crossorigin="anonymous"></script>
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

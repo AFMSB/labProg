@@ -10,8 +10,6 @@
   <title>Phone Store | Admin</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
     integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-  <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/checkout/">
-
   <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/dashboard/">
 
   <!-- Bootstrap core CSS -->
@@ -55,30 +53,30 @@
         <div class="sidebar-sticky pt-3">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">
+                    <a class="nav-link active" href="#">
                         <span data-feather="home"></span>
-                        Dashboard</a>
+                        Resumo</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="adminorders.html">
+                    <a class="nav-link" href="adminorders.php">
                         <span data-feather="file"></span>
                         Encomendas
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminproducts.html">
+                    <a class="nav-link" href="adminproducts.php">
                         <span data-feather="shopping-cart"></span>
                         Produtos
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminclients.html">
+                    <a class="nav-link" href="adminclients.php">
                         <span data-feather="users"></span>
                         Clientes
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="adminmessages.html">
+                    <a class="nav-link" href="adminmessages.php">
                         <span data-feather="layers"></span>
                         Mensagens
                     </a>
@@ -107,40 +105,20 @@
                 </li>
             </ul>
         </div>
-    </nav>
+      </nav>
 
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
-
-        <h2>Encomendas</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>Selecionar</th>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Apelido</th>
-                <th>E-mail</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input class="check-clients" type="checkbox" value="" id="defaultCheck1"></td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-              </tr>
-            </tbody>
-          </table>
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Resumo</h1>
         </div>
+        <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
       </main>
     </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
   <script src="js/admin.js"></script>

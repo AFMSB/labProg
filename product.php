@@ -16,7 +16,7 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-          <a class="navbar-brand" href="index.html">Phone Store</a>
+          <a class="navbar-brand" href="index.php">Phone Store</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -24,16 +24,16 @@
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="index.php">Inicio <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="index.html#services">Serviços</a>
+                <a class="nav-link" href="index.php#services">Serviços</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="products.html">Produtos</a>
+                <a class="nav-link" href="products.php">Produtos</a>
               </li>
             </ul>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.html" style="text-decoration:none;color:white;" >Entrar</a></button>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a class="logbtn" href="login.php" style="text-decoration:none;color:white;" >Entrar</a></button>
           </div>
         </nav>
       </header>
@@ -138,16 +138,6 @@
         </div>
         <div class="container">
             <div style="padding-top: 5vh;">
-                <ul class="nav nav-pills-a nav-pills mb-3 section-t3" id="pills-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link btn-outline-primary selected active" id="pills-plans-tab" data-toggle="pill"
-                            href="#phone2" role="tab" aria-controls="pills-plans" aria-selected="true" selected>Descrição</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link  btn-outline-primary" id="pills-map-tab" data-toggle="pill" href="#phone3"
-                            role="tab" aria-controls="pills-map">Especificações</a>
-                    </li>
-                </ul>
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade active show " id="phone2" role="tabpanel" aria-labelledby="pills-plans-tab">
                         <ul>
@@ -179,34 +169,6 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="tab-pane fade" id="phone3" role="tabpanel" aria-labelledby="pills-map-tab">
-                        <b>6.5-Inch Display</b>
-                        <p>
-                            The iPhone 11 Pro Max features a 6.5-inch Super Retina XDR display with True Tone
-                            technology. This HDR display provides fantastic colour reproduction and impressive
-                            brightness. In addition, the phone has one of the best cameras on the market.</p>
-                        <b>Face ID</b>
-                        <p>
-                            The efficient and now 30% faster Face ID authentication protects your privacy and lets you
-                            unlock your phone simply by looking at it.</p>
-                        <b>Cameras</b>
-                        <p>
-                            The triple 12 megapixel rear cameras, intelligent image processor and 4K video recording
-                            reveal subtleties invisible to the naked eye. Capture slow or fast motion video and take
-                            studio-quality portrait photos. What more could a photographer ask for?</p>
-                        <b>Speed above all else</b>
-                        <p>
-                            The A13 Bionic chip offers the smartest and most powerful chip ever made for smartphone.
-                            This combined with the amazingly vibrant 3D graphics and augmented reality apps makes the
-                            phone a joy to use.</p>
-                        <b>Wireless charging</b>
-                        <p>
-                            We’ve seen wireless headphones, but Qi wireless charging technology now lets you switch to
-                            wireless charging too. Say goodbye to cables!</p>
-                        <b>Warranty</b>
-                        <p>
-                            We provide a 12-month warranty for all our phones.</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -228,5 +190,4 @@
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

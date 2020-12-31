@@ -56,19 +56,19 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link" href="userorders.html">
+              <a class="nav-link" href="userorders.php">
                 <span data-feather="file"></span>
                 Orders
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="userprofile.html">
+              <a class="nav-link" href="userprofile.php">
                 <span data-feather="users"></span>
                 Perfil
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="usermessages.html">
+              <a class="nav-link active" href="usermessages.php">
                 <span data-feather="layers"></span>
                 Mensagens
               </a>
@@ -80,7 +80,7 @@
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
         <div class="container-fluid">
           <div class="list-group">
-            <a href="usermessagesconversation.html" class="list-group-item list-group-item-action active">
+            <a href="usermessagesconversation.php" class="list-group-item list-group-item-action active">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
                 <small>3 days ago</small>
@@ -91,7 +91,7 @@
                 <span class="badge badge-danger badge-pill">14</span>
               </div>
             </a>
-            <a href="usermessagesconversation.html" class="list-group-item list-group-item-action">
+            <a href="usermessagesconversation.php" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
                 <small>3 days ago</small>
@@ -102,7 +102,7 @@
                 <span class="badge badge-danger badge-pill">14</span>
               </div>
             </a>
-            <a href="usermessagesconversation.html" class="list-group-item list-group-item-action">
+            <a href="usermessagesconversation.php" class="list-group-item list-group-item-action">
               <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">List group item heading</h5>
                 <small>3 days ago</small>
