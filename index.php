@@ -1,7 +1,11 @@
 <?php
 session_start();
 
-$_SESSION["last"]="index.php";
+$_SESSION["last"] = "index.php";
+
+require_once "config.php";
+
+
 ?>
 
 <!doctype html>
@@ -64,24 +68,25 @@ $_SESSION["last"]="index.php";
                 </li>
             </ul>
             <?php
-            if (isset($_SESSION["email"])){?>
+            if (isset($_SESSION["email"])) {
+                ?>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         <?php echo $_SESSION["nome"] ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
-                            if($_SESSION["cargo"]=="ADM" || $_SESSION["cargo"]=="ROOT") echo"<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                                else echo"<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
+                        else echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
                         ?>
                         <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
-            <?php
-          }
-          else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
-          ?>
+                <?php
+            } else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
+            ?>
         </div>
     </nav>
 </header>
@@ -151,93 +156,68 @@ $_SESSION["last"]="index.php";
 
     <!-- START THE FEATURETTES -->
 
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7">
-            <h2 class="featurette-heading">Iphone <span class="text-muted">11 Pro</span></h2>
-            </h2>
-            <ul class="features">
-                <li class="features-item">
-                    <p class="lead">6,5" display</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">Triple-camera system</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">A13 Bionic chip</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">12-month warranty</p>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-5">
-            <div class="col-md-12">
-                <img src="images/products/sspaceGrey.jpg" alt="..."
-                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                     height="500">
-            </div>
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7 order-md-2">
-            <h2 class="featurette-heading">Iphone <span class="text-muted">11 Pro</span></h2>
-            <ul class="features">
-                <li class="features-item">
-                    <p class="lead">6,5" display</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">Triple-camera system</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">A13 Bionic chip</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">12-month warranty</p>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-5 order-md-1">
-            <div class="col-md-12">
-                <img src="images/products/sroseGold.jpg" alt="..."
-                     class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                     height="500">
-            </div>
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
-
-    <div class="row featurette">
-        <div class="col-md-7">
-            <h2 class="featurette-heading">Iphone <span class="text-muted">11 Pro</span></h2>
-            <ul class="features">
-                <li class="features-item">
-                    <p class="lead">6,5" display</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">Triple-camera system</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">A13 Bionic chip</p>
-                </li>
-                <li class="features-item">
-                    <p class="lead">12-month warranty</p>
-                </li>
-            </ul>
-        </div>
-        <div class="col-md-5">
-            <img src="images/products/sgreen.jpg" alt="..."
-                 class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500"
-                 height="500">
-        </div>
-    </div>
-
-    <hr class="featurette-divider">
+    <?php
+    $rst = $pdo->query("select distinct produtos.nome, especificacoes.processador, especificacoes.display, especificacoes.bateria from produtos inner join especificacoes on produtos.id = especificacoes.product_id limit 3;");
+    if ($rst->execute()) {
+        $i = 1;
+        while ($row = $rst->fetch(PDO::FETCH_OBJ)) {
+            if ($i % 2 == 0) {
+                echo "  <hr class=\"featurette-divider\">";
+                echo "  <div class=\"row featurette\">";
+                echo "      <div class=\"col-md-7\">";
+                echo "          <h2 class=\"featurette-heading\">" . $row->nome . "</h2>";
+                echo "          <ul class=\"features\">";
+                echo "              <li class=\"features-item\">";
+                echo "                  <p class=\"lead\">" . $row->display . "</p>";
+                echo "              </li>";
+                echo "              <li class=\"features-item\">";
+                echo "                  <p class=\"lead\">" . $row->bateria . "</p>";
+                echo "              </li>";
+                echo "              <li class=\"features-item\">";
+                echo "                  <p class=\"lead\">" . $row->processador . "</p>";
+                echo "              </li>";
+                echo "              <li class=\"features-item\">";
+                echo "                  <p class=\"lead\">12-month warranty</p>";
+                echo "              </li>";
+                echo "          </ul>";
+                echo "      </div>";
+                echo "      <div class=\"col-md-5\">";
+                echo "          <div class=\"col-md-12\">";
+                echo "              <img src=\"images/products/sspaceGrey.jpg\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
+                echo "          </div>";
+                echo "      </div>";
+                echo "  </div>";
+            } else {
+                echo "   <hr class=\"featurette-divider\">";
+                echo "   <div class=\"row featurette\">";
+                echo "       <div class=\"col-md-7 order-md-2\">";
+                echo "           <h2 class=\"featurette-heading\">" . $row->nome . " </h2>";
+                echo "           <ul class=\"features\">";
+                echo "               <li class=\"features-item\">";
+                echo "                   <p class=\"lead\"> " . $row->display . "</p>";
+                echo "               </li>";
+                echo "               <li class=\"features-item\">";
+                echo "                   <p class=\"lead\">" . $row->bateria . "</p>";
+                echo "               </li>";
+                echo "               <li class=\"features-item\">";
+                echo "                   <p class=\"lead\">" . $row->processador . "</p>";
+                echo "               </li>";
+                echo "               <li class=\"features-item\">";
+                echo "                   <p class=\"lead\">12-month warranty</p>";
+                echo "               </li>";
+                echo "           </ul>";
+                echo "       </div>";
+                echo "       <div class=\"col-md-5 order-md-1\">";
+                echo "           <div class=\"col-md-12\">";
+                echo "               <img src=\"images/products/sroseGold.jpg\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
+                echo "           </div>";
+                echo "       </div>";
+                echo "  </div>";
+            }
+            $i++;
+        }
+    }
+    ?>
 
     <!-- /END THE FEATURETTES -->
 
@@ -258,7 +238,9 @@ $_SESSION["last"]="index.php";
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
         crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
 
 
 </html>

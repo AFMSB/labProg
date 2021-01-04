@@ -2,6 +2,16 @@
 session_start();
 
 $_SESSION["last"] = "product.php";
+
+require_once "config.php";
+
+$product = $_GET["product"];
+
+
+$nomeproduto = $pdo->prepare("select nome from produtos where id = :produtoID");
+$nomeproduto->bindParam(":produtoID", $product, PDO:: PARAM_STR);
+$nomeproduto->execute();
+$nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
 ?>
 
 <!doctype html>
@@ -16,7 +26,7 @@ $_SESSION["last"] = "product.php";
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
           integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <title>Phone Store | Product</title>
+    <title>Phone Store | <?= $nomeprodutof->nome ?> </title>
 </head>
 
 <body>
@@ -40,23 +50,24 @@ $_SESSION["last"] = "product.php";
                 </li>
             </ul>
             <?php
-            if (isset($_SESSION["email"])){?>
+            if (isset($_SESSION["email"])) {
+                ?>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         <?php echo $_SESSION["nome"] ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
-                        if($_SESSION["cargo"]=="ADM" || $_SESSION["cargo"]=="ROOT") echo"<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                        else echo"<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
+                        else echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
                         ?>
                         <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
                 <?php
-            }
-            else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
+            } else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
             ?>
         </div>
     </nav>
@@ -92,25 +103,41 @@ $_SESSION["last"] = "product.php";
             </div>
         </div>
         <div class="col">
-            <h3>Iphone 11</h3>
+        <form class="form" action="<?php echo ("/projetolab/product.php?product=".$product); ?>" method="post">
+            <h3><?= $nomeprodutof->nome ?></h3>
+            <?php print_r($_POST)?>
+            <p>Cor</p>
             <div class="row " style="margin-top: 20px;">
-                <div class="col">
-                    <select class="form-control btn btn-outline-secondary" name="select">
-                        <option value="">Cor</option>
-                        <option value="">Green</option>
-                        <option value="">spaceGrey</option>
-                        <option value="">roseGold</option>
-                    </select>
-                </div>
+                    <div class="col">
+                        <select class="form-control btn btn-outline-secondary" name="cor" onchange="this.form.submit()">
+                            <?php
+                            $rs2 = $pdo->prepare("select cor from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = :product group by cor");
+                            $rs2->bindParam(":product", $product, PDO:: PARAM_STR);
+                            echo "<option  value=\"cor\">" . $_POST["cor"] . "</option>";
+                            if ($rs2->execute()) {
+                                while ($row2 = $rs2->fetch(PDO::FETCH_OBJ)) {
+                                    echo "<option  value=\"$row2->cor\">" . $row2->cor . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
             </div>
             <p>Armazenamento</p>
             <div class="row ">
                 <div class="col">
-                    <select class="form-control btn btn-outline-secondary" name="select">
-                        <option value="">Capacity</option>
-                        <option value="">64GB</option>
-                        <option value="">128GB</option>
-                        <option value="">256GB</option>
+                    <select class="form-control btn btn-outline-secondary" name="armazenamento">
+                        <?php
+                        $rs3 = $pdo->prepare("select armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = :product and especificacoes.cor = :cor group by armazenamento order by armazenamento desc;");
+                        $rs3->bindParam(":cor", $_POST['cor'], PDO:: PARAM_STR);
+                        $rs3->bindParam(":product", $product, PDO:: PARAM_STR);
+                        $TESTE = $_POST['cor'];
+                        if ($rs3->execute()) {
+                            while ($row3 = $rs3->fetch(PDO::FETCH_OBJ)) {
+                                echo "<option  value=\"$row3->armazenamento+$TESTE\">" . $row3->armazenamento . "</option>";
+                            }
+                        }
+                        ?>
                     </select>
                 </div>
             </div>
@@ -118,17 +145,15 @@ $_SESSION["last"] = "product.php";
             <div class="row ">
                 <div class="col">
                     <div class="btn-group" role="group" id="carrinho" aria-label="Basic example">
-                        <button type="button" class="btn btn-outline-primary">-</button>
-                        <button type="button" class="btn btn-outline-secondary" disabled>1</button>
-                        <button type="button" class="btn btn-outline-primary">+</button>
+                        <input type="number" name="quantidade" class="btn btn-outline-primary" value="1">
                     </div>
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-outline-primary">Adicionar ao carrinho</button>
+                    <button type="submit" class="btn btn-outline-primary">Adicionar ao carrinho</button>
                 </div>
             </div>
-
         </div>
+            </form>
     </div>
     <div class="container" style="margin-top: 5vh; background-color: #ebebeb; height: 10%;">
         <div class="row">
@@ -138,7 +163,7 @@ $_SESSION["last"] = "product.php";
                     <path fill-rule="evenodd"
                           d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                 </svg>
-                <p>Entregas e coletas rápidas
+                <p>Entregas rápidas
                     Você receberá a sua encomenda dentro de 1–4 dias úteis
                 </p>
             </div>
@@ -170,34 +195,27 @@ $_SESSION["last"] = "product.php";
     <div class="container">
         <div style="padding-top: 5vh;">
             <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade active show " id="phone2" role="tabpanel" aria-labelledby="pills-plans-tab">
+                <div class="tab-pane fade active show " id="phone2" role="tabpanel"
+                     aria-labelledby="pills-plans-tab">
                     <ul>
-                        <li><b>Display:</b> 6.5” Super Retina OLED display with HDR and True Tone</li>
-                        <li><b>Rear camera:</b> Triple 12 MP cameras with wide angle, ultra-wide angle and telescope
-                            lenses, portrait mode and lighting, and 4K video quality
-                        </li>
-                        <li><b>Front camera:</b> 12 MP TrueDepth
-                        </li>
-                        <li><b>Face ID:</b> Protect your privacy with facial recognition
-                        </li>
-                        <li><b>Processor:</b> Super powerful and intelligent A13 Bionic chip
-                        </li>
-                        <li><b>SIM card:</b> Dual SIM - nano-SIM and eSIM
-                        </li>
-                        <li><b>Bluetooth:</b> 5.0
-                        </li>
-                        <li><b>Connectors:</b> Lightning connector
-                        </li>
-                        <li><b>Network:</b> 4G / LTE, Wi-Fi
-                        </li>
-                        <li><b>Battery:</b> Li-ion battery, wireless charging, compatible with Qi chargers
-                        </li>
-                        <li><b>Water resistance:</b> The original waterproof seal IP68 cannot be guaranteed due to
-                            the
-                            refurbishing process Read more
-                        </li>
-                        <li><b>Size and weight:</b> 158.0 x 77.8 x 8.1 mm
-                        </li>
+                        <?php
+                        $rs1 = $pdo->query("select produtos.nome as nome, especificacoes.display as display, cameratras, faceid, processador, cartaosim, bluetooth, carregamento, rede, resistenciaagua, bateria, dimensoes, peso from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = $product limit 1");
+                        while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
+                            //recebidas
+                            if (!empty($row1->display)) echo "<li><b>Display:</b>" . $row1->display . "</li>";
+                            if (!empty($row1->cameratras)) echo "<li><b>Camera:</b>" . $row1->cameratras . "</li>";
+                            if (!empty($row1->faceid)) echo "<li><b>Face Id:</b>" . $row1->faceid . "</li>";
+                            if (!empty($row1->processador)) echo "<li><b>Processador:</b>" . $row1->processador . "</li>";
+                            if (!empty($row1->cartaosim)) echo "<li><b>Cartao Sim:</b>" . $row1->cartaosim . "</li>";
+                            if (!empty($row1->bluetooth)) echo "<li><b>Bluetooth:</b>" . $row1->bluetooth . "</li>";
+                            if (!empty($row1->carregamento)) echo "<li><b>Carregamento:</b>" . $row1->carregamento . "</li>";
+                            if (!empty($row1->rede)) echo "<li><b>Rede:</b>" . $row1->rede . "</li>";
+                            if (!empty($row1->resistenciaagua)) echo "<li><b>Resistencia a agua:</b>" . $row1->resistenciaagua . "</li>";
+                            if (!empty($row1->bateria)) echo "<li><b>Bateria:</b>" . $row1->bateria . "</li>";
+                            if (!empty($row1->dimensoes)) echo "<li><b>Dimensoes:</b>" . $row1->dimensoes . "</li>";
+                            if (!empty($row1->peso)) echo "<li><b>Peso:</b>" . $row1->peso . "</li>";
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -215,13 +233,14 @@ $_SESSION["last"] = "product.php";
 
 <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+</script>
 </body>
+
 </html>

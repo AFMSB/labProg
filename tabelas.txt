@@ -41,9 +41,8 @@ CREATE TABLE mensagens (
 CREATE TABLE encomenda_produto (
   `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `produto_id` int,
-  FOREIGN KEY(produto_id) REFERENCES produtos(id),
-  `user_id` int,
-  FOREIGN KEY(user_id) REFERENCES users(id),
+  FOREIGN KEY(produto_id) REFERENCES produtos(id) ON DELETE SET NULL,
+  `infoProduto` varchar(300),
   `quantidade` int NOT NULL,
   `preco` float NOT NULL,
   `voucher_id` int,
@@ -75,7 +74,7 @@ CREATE TABLE vouchers (
 CREATE TABLE imagens (
   `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `produto_id` int,
-  FOREIGN KEY(produto_id) REFERENCES produtos(id),
+  FOREIGN KEY(produto_id) REFERENCES produtos(id) ON DELETE CASCADE,
   `caminho` varchar(300) NOT NULL
 );
 

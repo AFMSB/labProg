@@ -17,12 +17,23 @@ if (isset($_GET['page1'])) {
     $pageno1 = 1;
 }
 
+
+if(isset($_GET['eliminar'])){
+    $eliminaespecificcacao = $pdo->prepare("delete from especificacoes where product_id = :id_eliminar");
+    $eliminaespecificcacao->bindParam(":id_eliminar", $_GET['eliminar'], PDO:: PARAM_STR);
+    $eliminaespecificcacao->execute();
+
+    //$eliminaproduto = $pdo->prepare("delete from produtos where product_id = :id_eliminar");
+    //$eliminaproduto->bindParam(":id_eliminar", $_GET['eliminar'], PDO:: PARAM_STR);
+    //$eliminaproduto->execute();
+}
+
 $numItens1 = 20;
 $shift1 = ($pageno1 - 1) * $numItens1;
 $paramId = $_SESSION["id"];
-$rsAll1 = $pdo->query("SELECT * FROM produtos");
+$rsAll1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id");
 $total_pages1 = ceil($rsAll1->rowCount() / $numItens1);
-$rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
+$rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id LIMIT $shift1, $numItens1;");
 
 ?>
 
@@ -66,7 +77,7 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
 
 <body>
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Phone Store</a>
+    <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="index.php">Phone Store</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
             data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -108,13 +119,14 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
                         </a>
                     </li>
                 </ul>
-
                 <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                     <span>Paginas</span>
-                    <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+
+                    <a class="plus-circle" href="adminaddpage.php">
                         <span data-feather="plus-circle"></span>
                     </a>
+
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
@@ -135,7 +147,6 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
 
-
             <h2>Produtos</h2>
             <div class="p-2 bd-highlight">
                 <nav aria-label="...">
@@ -155,9 +166,11 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Preço</th>
-                        <th>Quantidade</th>
-                        <th>Armazenamento</th>
+                        <th>Stock Existente</th>
                         <th>Categoria</th>
+                        <th>Armazenamento</th>
+                        <th>Cor</th>
+                        <th>Eliminar</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -168,8 +181,10 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
                         echo "<td>" . $row1->nome . "</td>";
                         echo "<td>" . $row1->preco . "</td>";
                         echo "<td>" . $row1->quantidade . "</td>";
-                        echo "<td>" . $row1->armazenamento . "</td>";
-                        echo "<td>" . $row1->CATEGORIA . "</td>";
+                        echo "<td>" . $row1->categoria . "</td>";
+                        echo "<td>" . $row1->armazenamento . " Gb</td>";
+                        echo "<td>" . $row1->cor . "</td>";
+                        echo "<td>" . "<a href=\"?eliminar=$row1->id\" class=\"danger\">Remover</a>" . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -179,16 +194,42 @@ $rs1 = $pdo->query("SELECT * FROM produtos LIMIT $shift1, $numItens1;");
         </main>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Criar Pagina</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</script>
+<script>
+    window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script src="js/admin.js"></script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+</script>
 
 </html>
