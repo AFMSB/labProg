@@ -91,6 +91,12 @@ $rs1 = $pdo->query("select encomenda.id, estado, encomenda.data, data_pagamento,
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="adminvouchers.php">
+                                <span data-feather="layers"></span>
+                                Vouchers
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" href="adminorders.php">
                                 <span data-feather="file"></span>
                                 Encomendas
@@ -117,20 +123,15 @@ $rs1 = $pdo->query("select encomenda.id, estado, encomenda.data, data_pagamento,
                             <span data-feather="plus-circle"></span>
                         </a>
                     </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Index
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Produtos
-                            </a>
-                        </li>
-                    </ul>
+                    <h6
+                            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Cupões</span>
+
+                        <a class="plus-circle" href="adminaddvoucher.php">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+
+                    </h6>
                 </div>
             </nav>
 
@@ -165,10 +166,10 @@ $rs1 = $pdo->query("select encomenda.id, estado, encomenda.data, data_pagamento,
                             <?php
                     while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
                         echo "<tr>";
-                        echo "<td>" . $row1->encomenda.id . "</td>";
+                        echo "<td>" . $row1->id . "</td>";
                         echo "<td>" . $row1->nome . "</td>";
                         echo "<td>" . $row1->estado. "</td>";
-                        echo "<td>" . $row1->encomenda.data . "</td>";
+                        echo "<td>" . $row1->data . "</td>";
                         echo "<td>" . $row1->data_pagamento . "</td>";
                         echo "<td>" . $row1->total . "</td>";
                         echo "<td>" . "<a href=\"adminordersdetails.php?encomenda=$row1->id\" class=\"\">Detalhes</a>" . "</td>";

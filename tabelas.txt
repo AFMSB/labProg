@@ -40,13 +40,9 @@ CREATE TABLE mensagens (
 
 CREATE TABLE encomenda_produto (
   `id` int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `produto_id` int,
-  FOREIGN KEY(produto_id) REFERENCES produtos(id) ON DELETE SET NULL,
   `infoProduto` varchar(300),
   `quantidade` int NOT NULL,
   `preco` float NOT NULL,
-  `voucher_id` int,
-  FOREIGN KEY(voucher_id) REFERENCES vouchers(id),
   `encomenda_id` int,
   FOREIGN KEY(encomenda_id) REFERENCES encomenda(id),
   `estado` varchar(50) NOT NULL

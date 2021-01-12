@@ -4,7 +4,6 @@ require_once "config.php";
 $_SESSION["last"] = "products.php";
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -71,9 +70,12 @@ $_SESSION["last"] = "products.php";
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
                         if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                        else echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        else {
+                            echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                            echo "<li><a href=\"checkout.php\" class=\"dropdown-item\">Ver Carrinho</a></li>";
+                        }
                         ?>
-                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
+                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password </a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
@@ -88,7 +90,8 @@ $_SESSION["last"] = "products.php";
 
     <div class="container">
         <h1>Phone Store </h1>
-        <p class="lead text-muted">Todos os nossos telemoveis sao completamente desbloqueados,para que qualquer um possa
+        <p class="lead text-muted">Todos os nossos telemoveis sao completamente desbloqueados,para que qualquer um
+            possa
             ter acesso imediato!Confiança, preços baixos e satisfaçao do cliente sao a nossa principal
             responsabilidade </p>
 
@@ -103,52 +106,38 @@ $_SESSION["last"] = "products.php";
 
     <div class="container">
         <td>Ordenar por:</td>
-
         <div class="d-flex bd-highlight mb-3">
             <div class="mr-auto p-2 bd-highlight">
                 <div class="dropdown">
-                    <select class="form-control  " name="select">
-                        <option value="">Mais barato</option>
-                        <option value="">Mais caro</option>
-                    </select>
+                    <form class="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"
+                          enctype="multipart/form-data">
+                        <select class="form-control  " name="filtro" onchange="this.form.submit()">
+                            <option value="default">Ordenar</option>
+                            <option value="maiscaro">Mais barato</option>
+                            <option value="maisbarato">Mais caro</option>
+                        </select>
+                    </form>
                 </div>
             </div>
 
             <div class="p-2 bd-highlight"></div>
-            <div class="p-2 bd-highlight">
-                <nav aria-label="...">
-                    <ul class="pagination ">
-                        <li class="page-item"><a class="page-link" href="#" tabindex="-1">Previous</a>
-
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item active">
-                            <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+            <div class="p-2 bd-highlight"></div>
         </div>
         <div class="row">
             <?php
-      
-            $maiscaro = $pdo->query("select id, nome, preco from produtos order by preco desc");
-            $maisbarato = $pdo->query("select id, nome, preco from produtos order by preco asc");
-           
-            $rs1 = $maisbarato;
+
+            $maiscaro = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco desc");
+            $maisbarato = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco asc");
+            $rs1 = $_POST["filtro"] == "maiscaro" ? $maisbarato : $maiscaro;
             while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
-              $stmt2 = $pdo->prepare("select caminho from imagens where produto_id = ? limit 1"); 
-              $stmt2->execute(array($row1->id));
-              $imagepath = $stmt2->fetch(PDO::FETCH_OBJ);
+                $stmt2 = $pdo->prepare("select caminho from imagens where produto_id = ? order by rand() limit 1");
+                $stmt2->execute(array($row1->id));
+                $imagepath = $stmt2->fetch(PDO::FETCH_OBJ);
                 echo "     <div class=\"col-md-4 text-center\">";
                 echo "       <div class=\"card mb-4 shadow-sm\">";
                 echo "         <img src=\"$imagepath->caminho\" class=\"img-fluid\" alt=\"Responsive image\">";
                 echo "         <div class=\"card-body\">";
-                echo "          <h6 class=\"card-title\">" . $row1->nome . "</h6>";
+                echo "          <h6 class=\"card-title\">" . $row1->nome . " " . $row1->armazenamento . "Gb</h6>";
                 echo "           <div class=\"d-flex justify-content-between align-items-center\">";
                 echo "             <div class=\"btn-group\">";
                 echo "               <a href=\"product.php?product=" . $row1->id . "\" class=\"btn btn-primary\" role=\"button\">Ver Mais</a>";
@@ -162,25 +151,29 @@ $_SESSION["last"] = "products.php";
             ?>
             <footer class="container-fluid">
                 <p class="float-right"><a href="#">Voltar ao inicio</a></p>
-                <p>&copy; 2020 Phone Store, LDA. &middot; <a href="#">Privacidade</a> &middot; <a href="#">Termos</a>
+                <p>&copy; 2020 Phone Store, LDA. &middot; <a href="#">Privacidade</a> &middot; <a
+                            href="#">Termos</a>
                 </p>
             </footer>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</script>
+<script>
+    window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')
+</script>
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
 
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+</script>
+
 </html>

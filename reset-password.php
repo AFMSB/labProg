@@ -124,23 +124,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </li>
             </ul>
             <?php
-            if (isset($_SESSION["email"])){?>
+            if (isset($_SESSION["email"])) {
+                ?>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                         <?php echo $_SESSION["nome"] ?>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
-                        if($_SESSION["cargo"]=="ADM" || $_SESSION["cargo"]=="ROOT") echo"<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                        else echo"<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
+                        else{
+                            echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                            echo "<li><a href=\"checkout.php\" class=\"dropdown-item\">Ver Carrinho</a></li>";
+                        }
                         ?>
-                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
+                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password </a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
                 <?php
-            }
-            else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
+            } else echo "<button class=\"btn btn-outline-success my-2 my-sm-0\" type=\"submit\"><a class=\"logbtn\" href=\"login.php\" style=\"text-decoration:none;color:white;\" >Entrar</a></button>";
             ?>
         </div>
     </nav>

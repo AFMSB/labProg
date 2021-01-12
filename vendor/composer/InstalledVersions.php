@@ -29,7 +29,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '67c3c4f591f7c3d5bd6865f354319c436c062b86',
+    'reference' => '4f0e970ee72509296e1731fcc007eb3d02e87b89',
     'name' => '__root__',
   ),
   'versions' => 
@@ -41,7 +41,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '67c3c4f591f7c3d5bd6865f354319c436c062b86',
+      'reference' => '4f0e970ee72509296e1731fcc007eb3d02e87b89',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.2.0',
+      'version' => '6.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'e38888a75c070304ca5514197d4847a59a5c853f',
     ),
     'stripe/stripe-php' => 
     array (
@@ -51,6 +60,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '935d2c67912007f6d17b6c08a62050252c509129',
+    ),
+    'tecnickcom/tcpdf' => 
+    array (
+      'pretty_version' => '6.3.5',
+      'version' => '6.3.5.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '19a535eaa7fb1c1cac499109deeb1a7a201b4549',
     ),
   ),
 );

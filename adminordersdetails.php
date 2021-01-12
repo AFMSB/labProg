@@ -20,9 +20,9 @@ if (isset($_GET['page1'])) {
 $numItens1 = 20;
 $shift1 = ($pageno1 - 1) * $numItens1;
 $paramId = $_GET["encomenda"];
-$rsAll1 = $pdo->query("select *from encomenda_produto inner join produtos on produtos.id = encomenda_produto.produto_id where encomenda_id = $paramId");
+$rsAll1 = $pdo->query("select *from encomenda_produto where encomenda_id = $paramId");
 $total_pages1 = ceil($rsAll1->rowCount() / $numItens1);
-$rs1 = $pdo->query("select *from encomenda_produto inner join produtos on produtos.id = encomenda_produto.produto_id where encomenda_id = $paramId LIMIT $shift1, $numItens1;");
+$rs1 = $pdo->query("select *from encomenda_produto where encomenda_id = $paramId LIMIT $shift1, $numItens1;");
 
 ?>
 
@@ -90,6 +90,12 @@ $rs1 = $pdo->query("select *from encomenda_produto inner join produtos on produt
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="adminvouchers.php">
+                                <span data-feather="layers"></span>
+                                Vouchers
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" href="adminorders.php">
                                 <span data-feather="file"></span>
                                 Encomendas
@@ -116,20 +122,15 @@ $rs1 = $pdo->query("select *from encomenda_produto inner join produtos on produt
                             <span data-feather="plus-circle"></span>
                         </a>
                     </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Index
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Produtos
-                            </a>
-                        </li>
-                    </ul>
+                    <h6
+                            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Cupões</span>
+
+                        <a class="plus-circle" href="adminaddvoucher.php">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+
+                    </h6>
                 </div>
             </nav>
 
@@ -151,11 +152,9 @@ $rs1 = $pdo->query("select *from encomenda_produto inner join produtos on produt
                     <table class="table table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>ID Produto</th>
-                                <th>Nome</th>
+                                <th>Produto</th>
                                 <th>Quantidade</th>
                                 <th>Preço</th>
-                                <th>ID Voucher</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
@@ -163,11 +162,9 @@ $rs1 = $pdo->query("select *from encomenda_produto inner join produtos on produt
                             <?php
                     while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
                         echo "<tr>";
-                        echo "<td>" . $row1->produto_id . "</td>";
-                        echo "<td>" . $row1->nome. "</td>";
+                        echo "<td>" . $row1->infoProduto . "</td>";
                         echo "<td>" . $row1->quantidade. "</td>";
                         echo "<td>" . $row1->preco . "</td>";
-                        echo "<td>" . $row1->voucher_id . "</td>";
                         echo "<td>" . $row1->estado . "</td>";
                         echo "</tr>";
                     }

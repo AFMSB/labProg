@@ -114,8 +114,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Verificar existencia de erros antes de inserir na base de dados    
     if (empty($nomeErr) && empty($stockErr) && empty($corErr) && empty($armazenamentoErr) && empty($precoErr) && empty($categoriaErr) && empty($file_err)) {
-        $sql = "INSERT INTO produtos (nome, preco, CATEGORIA) VALUES (:nome, :preco, :categoria)";
-        $sql1 = "INSERT INTO especificacoes (product_id, quantidade, display, cor, armazenamento, cameratras, faceid, processador, cartaosim, bluetooth, carregamento, rede, resistenciaagua, bateria, dimensoes, peso) VALUES (:produto_id, :quantidade, :display, :cor, :armazenamento, :cameratras, :faceid, :processador, :cartaosim, :bluetooth, :carregamento, :rede, :resistenciaagua, :bateria, :dimensoes, :peso)";
+        $sql = "INSERT INTO produtos (nome, CATEGORIA, display, cameratras, faceid, processador, cartaosim, bluetooth, carregamento, rede, resistenciaagua, bateria, dimensoes, peso) VALUES (:nome, :categoria, :display, :cameratras, :faceid, :processador, :cartaosim, :bluetooth, :carregamento, :rede, :resistenciaagua, :bateria, :dimensoes, :peso)";
+        $sql1 = "INSERT INTO especificacoes (product_id, quantidade, cor, armazenamento, preco) VALUES (:produto_id, :quantidade, :cor, :armazenamento, :preco)";
         $sql2 = "SELECT id FROM produtos WHERE nome = :nome";
         $sql3 = "INSERT INTO imagens (produto_id,caminho) values(:prod_id, :caminho)";
 
@@ -123,8 +123,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(empty($jaexiste)){
             if ($stmt = $pdo->prepare($sql)) {
                 $stmt->bindParam(":nome", $nome, PDO::PARAM_STR);
-                $stmt->bindParam(":preco", $preco, PDO::PARAM_STR);
                 $stmt->bindParam(":categoria", $categoria, PDO::PARAM_STR);
+
+                $stmt->bindParam(":display", trim($_POST["display"]), PDO::PARAM_STR);
+                $stmt->bindParam(":cameratras", trim($_POST["camera_tras"]), PDO::PARAM_STR);
+                $stmt->bindParam(":faceid", trim($_POST["face_id"]), PDO::PARAM_STR);
+                $stmt->bindParam(":processador", trim($_POST["processador"]), PDO::PARAM_STR);
+                $stmt->bindParam(":cartaosim", trim($_POST["sim"]), PDO::PARAM_STR);
+                $stmt->bindParam(":bluetooth", trim($_POST["bluetooth"]), PDO::PARAM_STR);
+                $stmt->bindParam(":carregamento", trim($_POST["carregamento"]), PDO::PARAM_STR);
+                $stmt->bindParam(":rede", trim($_POST["rede"]), PDO::PARAM_STR);
+                $stmt->bindParam(":resistenciaagua", trim($_POST["resistencia"]), PDO::PARAM_STR);
+                $stmt->bindParam(":bateria",trim($_POST["bateria"]), PDO::PARAM_STR);
+                $stmt->bindParam(":dimensoes", trim($_POST["dimensoes"]), PDO::PARAM_STR);
+                $stmt->bindParam(":peso", trim($_POST["peso"]), PDO::PARAM_STR);
 
                 if ($stmt->execute()) {
                     $jacriei = 'ja criei';
@@ -162,25 +174,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-        
+
         if(empty($product_idErr)){
             if ($stmt3 = $pdo->prepare($sql1)) {
                 $stmt3->bindParam(":produto_id", $product_id, PDO::PARAM_INT);
                 $stmt3->bindParam(":quantidade", $stock, PDO::PARAM_INT);
-                $stmt3->bindParam(":display", trim($_POST["display"]), PDO::PARAM_STR);
                 $stmt3->bindParam(":cor", $cor, PDO::PARAM_STR);
                 $stmt3->bindParam(":armazenamento", $armazenamento, PDO::PARAM_STR);
-                $stmt3->bindParam(":cameratras", trim($_POST["camera_tras"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":faceid", trim($_POST["face_id"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":processador", trim($_POST["processador"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":cartaosim", trim($_POST["sim"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":bluetooth", trim($_POST["bluetooth"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":carregamento", trim($_POST["carregamento"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":rede", trim($_POST["rede"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":resistenciaagua", trim($_POST["resistencia"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":bateria",trim($_POST["bateria"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":dimensoes", trim($_POST["dimensoes"]), PDO::PARAM_STR);
-                $stmt3->bindParam(":peso", trim($_POST["peso"]), PDO::PARAM_STR);
+                $stmt3->bindParam(":preco", $preco, PDO::PARAM_STR);
                 $stmt3->execute();
                 }    
             }
@@ -270,7 +271,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </a>
                         </li>
                     </ul>
-
                     <h6
                         class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Paginas</span>
@@ -279,20 +279,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span data-feather="plus-circle"></span>
                         </a>
                     </h6>
-                    <ul class="nav flex-column mb-2">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Index
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file-text"></span>
-                                Produtos
-                            </a>
-                        </li>
-                    </ul>
+                    <h6
+                            class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                        <span>Cupões</span>
+
+                        <a class="plus-circle" href="adminaddvoucher.php">
+                            <span data-feather="plus-circle"></span>
+                        </a>
+
+                    </h6>
                 </div>
             </nav>
 

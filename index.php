@@ -78,9 +78,12 @@ require_once "config.php";
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
                         if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                        else echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        else{
+                            echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                            echo "<li><a href=\"checkout.php\" class=\"dropdown-item\">Ver Carrinho</a></li>";
+                        }
                         ?>
-                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
+                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password </a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
@@ -157,10 +160,14 @@ require_once "config.php";
     <!-- START THE FEATURETTES -->
 
     <?php
-    $rst = $pdo->query("select distinct produtos.nome, especificacoes.processador, especificacoes.display, especificacoes.bateria from produtos inner join especificacoes on produtos.id = especificacoes.product_id limit 3;");
+    $rst = $pdo->query("select distinct produtos.id, produtos.nome, produtos.processador, produtos.display, produtos.bateria from produtos inner join especificacoes on produtos.id = especificacoes.product_id limit 3;");
+    $nomefoto = $pdo->prepare("select *from imagens where produto_id = :produto limit 1");
     if ($rst->execute()) {
         $i = 1;
         while ($row = $rst->fetch(PDO::FETCH_OBJ)) {
+            $nomefoto->bindParam(":produto", $row->id, PDO:: PARAM_STR);
+            $foto=$nomefoto->execute();
+            $foto = $nomefoto->fetch(PDO::FETCH_OBJ);
             if ($i % 2 == 0) {
                 echo "  <hr class=\"featurette-divider\">";
                 echo "  <div class=\"row featurette\">";
@@ -183,7 +190,7 @@ require_once "config.php";
                 echo "      </div>";
                 echo "      <div class=\"col-md-5\">";
                 echo "          <div class=\"col-md-12\">";
-                echo "              <img src=\"images/products/sspaceGrey.jpg\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
+                echo "              <img src=\"$foto->caminho\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
                 echo "          </div>";
                 echo "      </div>";
                 echo "  </div>";
@@ -209,7 +216,7 @@ require_once "config.php";
                 echo "       </div>";
                 echo "       <div class=\"col-md-5 order-md-1\">";
                 echo "           <div class=\"col-md-12\">";
-                echo "               <img src=\"images/products/sroseGold.jpg\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
+                echo "               <img src=\"$foto->caminho\" alt=\"...\" class=\"bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto\" width=\"500\" height=\"500\">";
                 echo "           </div>";
                 echo "       </div>";
                 echo "  </div>";

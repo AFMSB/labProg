@@ -1,17 +1,41 @@
 <?php
 session_start();
 
-$_SESSION["last"] = "product.php";
-
-require_once "config.php";
-
 $product = $_GET["product"];
 
+$_SESSION["last"] = "product.php?product=".$product;
+
+require_once "config.php";
 
 $nomeproduto = $pdo->prepare("select nome from produtos where id = :produtoID");
 $nomeproduto->bindParam(":produtoID", $product, PDO:: PARAM_STR);
 $nomeproduto->execute();
 $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
+
+if (isset($_POST['armazenamento']) && isset($_POST['quantidade']) && $_POST['armazenamento'] != 'armazenamento' && $_POST['quantidade'] > 0) {
+    $pieces = explode("+", $_POST['armazenamento']);
+
+    $index = 0;
+    foreach ($_SESSION['carrinho'] as $a) {
+        $pieces = explode("+", $_POST['armazenamento']);
+        echo $_SESSION['carrinho'][$index]['cor'] . "  " . $_SESSION['carrinho'][$index]['armazenamento'];
+        if ($_SESSION['carrinho'][$index]['cor'] == $pieces[1] && $_SESSION['carrinho'][$index]['armazenamento'] == $pieces[0] && $_SESSION['carrinho'][$index]['id'] == $product) {
+            $_SESSION['carrinho'][$index]['quantidade'] += $_POST['quantidade'];
+            $found = true;
+            break;
+        }
+        $index++;
+    }
+
+    if (!$found){
+        $_SESSION['carrinho'][] = array(
+            'cor' => $pieces[1],
+            'armazenamento' => $pieces[0],
+            'quantidade' => $_POST['quantidade'],
+            'nome' => $nomeprodutof->nome,
+            'id' => $product);
+    }
+}
 ?>
 
 <!doctype html>
@@ -60,9 +84,12 @@ $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
                         <?php
                         if ($_SESSION["cargo"] == "ADM" || $_SESSION["cargo"] == "ROOT") echo "<li><a href=\"admin.php\" class=\"dropdown-item\">Área Administração</a></li>";
-                        else echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                        else{
+                            echo "<li><a href=\"userprofile.php\" class=\"dropdown-item\">Área Pessoal</a></li>";
+                            echo "<li><a href=\"checkout.php\" class=\"dropdown-item\">Ver Carrinho</a></li>";
+                        }
                         ?>
-                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password</a></li>
+                        <li><a href="reset-password.php" class="dropdown-item">Alterar Password </a></li>
                         <li><a href="logout.php" class="dropdown-item">Terminar Sessão</a></li>
                     </ul>
                 </div>
@@ -77,20 +104,22 @@ $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
         <div class="col-6">
             <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                 <ol class="carousel-indicators">
-                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                 </ol>
                 <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="images/products/green.jpg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/products/roseGold.jpg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="images/products/spaceGrey.jpg" class="d-block w-100" alt="...">
-                    </div>
+                    <?php
+                    $nomefoto = $pdo->prepare("select *from imagens where produto_id = :produto");
+                    $nomefoto->bindParam(":produto", $product, PDO:: PARAM_STR);
+                    $nomefoto->execute();
+                    $ativo = 1;
+                    while ($foto = $nomefoto->fetch(PDO::FETCH_OBJ)) {
+                        if ($ativo == 1) {
+                            echo "<div class=\"carousel-item active\" >";
+                        } else echo "<div class=\"carousel-item\">";
+                        echo "<img src=\"$foto->caminho\" class=\"d-block w-100\">";
+                        echo "</div>";
+                        $ativo++;
+                    }
+                    ?>
                 </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -103,13 +132,13 @@ $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
             </div>
         </div>
         <div class="col">
-        <form class="form" action="<?php echo ("/projetolab/product.php?product=".$product); ?>" method="post">
-            <h3><?= $nomeprodutof->nome ?></h3>
-            <?php print_r($_POST)?>
-            <p>Cor</p>
-            <div class="row " style="margin-top: 20px;">
+            <form class="form" action="<?php echo("/projetolab/product.php?product=" . $product); ?>" method="post">
+                <h3><?= $nomeprodutof->nome?></h3>
+                <p>Cor</p>
+                <div class="row " style="margin-top: 20px;">
                     <div class="col">
-                        <select class="form-control btn btn-outline-secondary" name="cor" onchange="this.form.submit()">
+                        <select class="form-control btn btn-outline-secondary" name="cor"
+                                onchange="this.form.submit()">
                             <?php
                             $rs2 = $pdo->prepare("select cor from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = :product group by cor");
                             $rs2->bindParam(":product", $product, PDO:: PARAM_STR);
@@ -122,38 +151,57 @@ $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
                             ?>
                         </select>
                     </div>
-            </div>
-            <p>Armazenamento</p>
-            <div class="row ">
-                <div class="col">
-                    <select class="form-control btn btn-outline-secondary" name="armazenamento">
-                        <?php
-                        $rs3 = $pdo->prepare("select armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = :product and especificacoes.cor = :cor group by armazenamento order by armazenamento desc;");
-                        $rs3->bindParam(":cor", $_POST['cor'], PDO:: PARAM_STR);
-                        $rs3->bindParam(":product", $product, PDO:: PARAM_STR);
-                        $TESTE = $_POST['cor'];
-                        if ($rs3->execute()) {
-                            while ($row3 = $rs3->fetch(PDO::FETCH_OBJ)) {
-                                echo "<option  value=\"$row3->armazenamento+$TESTE\">" . $row3->armazenamento . "</option>";
-                            }
-                        }
-                        ?>
-                    </select>
                 </div>
-            </div>
-            <p>Quantidade</p>
-            <div class="row ">
-                <div class="col">
-                    <div class="btn-group" role="group" id="carrinho" aria-label="Basic example">
-                        <input type="number" name="quantidade" class="btn btn-outline-primary" value="1">
+                <p>Armazenamento</p>
+                <div class="row ">
+                    <div class="col">
+                        <select class="form-control btn btn-outline-secondary" name="armazenamento" onchange="this.form.submit()">
+                            <?php
+                            $rs3 = $pdo->prepare("select armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = :product and especificacoes.cor = :cor group by armazenamento order by armazenamento desc;");
+                            $rs3->bindParam(":cor", $_POST['cor'], PDO:: PARAM_STR);
+                            $rs3->bindParam(":product", $product, PDO:: PARAM_STR);
+                            $cor = $_POST['cor'];
+                            $quantidade = $_POST['quantidade'];
+                            if ($rs3->execute()) {
+                                while ($row3 = $rs3->fetch(PDO::FETCH_OBJ)) {
+                                    echo "<option  value=\"$row3->armazenamento+$cor\">" . $row3->armazenamento . "</option>";
+                                }
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-outline-primary">Adicionar ao carrinho</button>
+                <p>Quantidade</p>
+                <div class="row ">
+                    <div class="col">
+                        <div class="btn-group" role="group" id="carrinho" aria-label="Basic example">
+                            <input type="number" name="quantidade" class="btn btn-outline-primary" value="1">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-outline-primary">Adicionar ao carrinho</button>
+                    </div>
                 </div>
+            </form>
+            <div class="row ">
+                <div class="col">
+                    <?php
+                    //print_r($_POST);
+                    $spcs = explode("+", $_POST['armazenamento']);
+                    $rs4 = $pdo->prepare("select preco from especificacoes where product_id = :product and cor = :cor and armazenamento = :armazenamento");
+                    $rs4->bindParam(":product", $product, PDO:: PARAM_STR);
+                    $rs4->bindParam(":cor", $spcs[1], PDO:: PARAM_STR);
+                    $rs4->bindParam(":armazenamento", $spcs[0], PDO:: PARAM_STR);
+                    $quantidade = $_POST['quantidade'];
+                    if ($rs4->execute()) {
+                        $row4 = $rs4->fetch(PDO::FETCH_OBJ);
+                            echo "<h2>".$row4->preco."€</h2>";
+                    }
+                    ?>
+                </div>
+
             </div>
         </div>
-            </form>
     </div>
     <div class="container" style="margin-top: 5vh; background-color: #ebebeb; height: 10%;">
         <div class="row">
@@ -199,7 +247,7 @@ $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
                      aria-labelledby="pills-plans-tab">
                     <ul>
                         <?php
-                        $rs1 = $pdo->query("select produtos.nome as nome, especificacoes.display as display, cameratras, faceid, processador, cartaosim, bluetooth, carregamento, rede, resistenciaagua, bateria, dimensoes, peso from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.id = $product limit 1");
+                        $rs1 = $pdo->query("select nome, display, cameratras, faceid, processador, cartaosim, bluetooth, carregamento, rede, resistenciaagua, bateria, dimensoes, peso from produtos  where produtos.id = $product");
                         while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
                             //recebidas
                             if (!empty($row1->display)) echo "<li><b>Display:</b>" . $row1->display . "</li>";

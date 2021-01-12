@@ -17,7 +17,7 @@ if (isset($_GET['page1'])) {
     $pageno1 = 1;
 }
 
-$numItens1 = 1;
+$numItens1 = 20;
 $shift1 = ($pageno1 - 1) * $numItens1;
 $paramId = $_SESSION["id"];
 $rsAll1 = $pdo->query("SELECT * FROM encomenda WHERE user_id = $paramId");
@@ -126,6 +126,7 @@ $rs1 = $pdo->query("SELECT * FROM encomenda WHERE user_id = $paramId LIMIT $shif
                         <th>Data</th>
                         <th>Estado</th>
                         <th>Total</th>
+                        <th>Detalhes</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -136,6 +137,7 @@ $rs1 = $pdo->query("SELECT * FROM encomenda WHERE user_id = $paramId LIMIT $shif
                         echo "<td>" . $row1->data . "</td>";
                         echo "<td>" . $row1->estado . "</td>";
                         echo "<td>" . $row1->total . "</td>";
+                        echo "<td>" . "<a href=\"userordersdetails.php?encomenda=$row1->id\" class=\"\">Detalhes</a>" . "</td>";
                         echo "</tr>";
                     }
                     ?>

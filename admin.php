@@ -17,23 +17,73 @@ if (isset($_GET['page1'])) {
     $pageno1 = 1;
 }
 
-
 if(isset($_GET['eliminar'])){
-    $eliminaespecificcacao = $pdo->prepare("delete from especificacoes where product_id = :id_eliminar");
+    $eliminaespecificcacao = $pdo->prepare("delete from especificacoes where id = :id_eliminar");
     $eliminaespecificcacao->bindParam(":id_eliminar", $_GET['eliminar'], PDO:: PARAM_STR);
     $eliminaespecificcacao->execute();
-
-    //$eliminaproduto = $pdo->prepare("delete from produtos where product_id = :id_eliminar");
-    //$eliminaproduto->bindParam(":id_eliminar", $_GET['eliminar'], PDO:: PARAM_STR);
-    //$eliminaproduto->execute();
 }
 
 $numItens1 = 20;
 $shift1 = ($pageno1 - 1) * $numItens1;
 $paramId = $_SESSION["id"];
-$rsAll1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id");
+$rsAll1 = $pdo->query("select especificacoes.id, especificacoes.id as espid, produtos.nome, especificacoes.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id");
 $total_pages1 = ceil($rsAll1->rowCount() / $numItens1);
-$rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id LIMIT $shift1, $numItens1;");
+$rs1 = $pdo->query("select especificacoes.id, especificacoes.id as espid, produtos.nome, especificacoes.preco, especificacoes.quantidade, produtos.categoria, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id LIMIT $shift1, $numItens1;");
+
+$id = $preco = $quantidade = "";
+$idErr = $precoErr = $quantidadeErr = "";
+
+if (empty(trim($_POST["id"]))) {
+    $idErr = "Introduza o id do produto que pretende editar";
+} else {
+    $sql = "SELECT id FROM especificacoes WHERE id = :id";
+    if ($stmt = $pdo->prepare($sql)) {
+        $stmt->bindParam(":id", $param_id, PDO::PARAM_STR);
+        $param_id = trim($_POST["id"]);
+        if ($stmt->execute()) {
+            if ($stmt->rowCount() == 0) {
+                $idErr = "Este id não existe";
+            } else {
+                $id = trim($_POST["id"]);
+            }
+        }
+        unset($stmt);
+    }
+}
+
+if(empty(trim($_POST['preco']))){
+    $precoErr = "Introduza o preço do produto";
+}elseif (!is_numeric(trim($_POST['preco']))){
+    $precoErr = "Preço tem de ser um valor numerico";
+}else{
+    $preco = trim($_POST["preco"]);
+}
+
+//if (!is_numeric(trim($_POST['quantidade'])))echo var_export($_POST['quantidade'], true) . " is numeric", PHP_EOL;
+
+if(empty(trim($_POST['quantidade']))){
+    $quantidadeErr = "Introduza o stock do produto";
+}elseif (!is_numeric(trim($_POST['quantidade']))){
+    $quantidadeErr = "quantidade tem de ser um valor numerico";
+}else{
+    $quantidade = trim($_POST["quantidade"]);
+}
+
+if (empty($idErr) && empty($quantidadeErr) && empty($precoErr)) {
+
+    $sql = "UPDATE especificacoes SET preco = :preco, quantidade = :quantidade WHERE id = :id";
+
+    if ($stmt = $pdo->prepare($sql)) {
+        $stmt->bindParam(":preco", $preco, PDO::PARAM_STR);
+        $stmt->bindParam(":quantidade", $quantidade, PDO::PARAM_STR);
+        $stmt->bindParam(":id", $param_id, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            header("location: admin.php");
+        }
+        unset($stmt);
+    }
+}
 
 ?>
 
@@ -101,6 +151,12 @@ $rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especific
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="adminvouchers.php">
+                            <span data-feather="layers"></span>
+                            Vouchers
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="adminorders.php">
                             <span data-feather="file"></span>
                             Encomendas
@@ -128,20 +184,15 @@ $rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especific
                     </a>
 
                 </h6>
-                <ul class="nav flex-column mb-2">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Index
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <span data-feather="file-text"></span>
-                            Produtos
-                        </a>
-                    </li>
-                </ul>
+                <h6
+                        class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                    <span>Cupões</span>
+
+                    <a class="plus-circle" href="adminaddvoucher.php">
+                        <span data-feather="plus-circle"></span>
+                    </a>
+
+                </h6>
             </div>
         </nav>
 
@@ -153,7 +204,7 @@ $rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especific
                     <ul class="pagination ">
                         <?php
                         $pages1 = 0;
-                        if ($rsAll1->rowCount() <= $numItens1 || isset($_GET['sortear'])) $total_pages1 = 0;
+                        if ($rsAll1->rowCount() <= $numItens1) $total_pages1 = 0;
                         for ($i = 1; $i <= $total_pages1; $i++) echo "<li class=\"page-item\"><a class=\"page-link\" href=\"?page1=$i\">$i</a></li>";
                         ?>
                     </ul>
@@ -179,42 +230,46 @@ $rs1 = $pdo->query("select produtos.id, produtos.nome, produtos.preco, especific
                         echo "<tr>";
                         echo "<td>" . $row1->id . "</td>";
                         echo "<td>" . $row1->nome . "</td>";
-                        echo "<td>" . $row1->preco . "</td>";
+                        echo "<td>" . $row1->preco . " €</td>";
                         echo "<td>" . $row1->quantidade . "</td>";
                         echo "<td>" . $row1->categoria . "</td>";
                         echo "<td>" . $row1->armazenamento . " Gb</td>";
                         echo "<td>" . $row1->cor . "</td>";
-                        echo "<td>" . "<a href=\"?eliminar=$row1->id\" class=\"danger\">Remover</a>" . "</td>";
+                        echo "<td>" . "<a href=\"?eliminar=$row1->espid\" class=\"danger\">Remover</a>" . "</td>";
                         echo "</tr>";
                     }
                     ?>
                     </tbody>
                 </table>
             </div>
+            <br>
+            <h2>Editar Produto</h2>
+            <div class="container-fluid">
+                <form class="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+                    <div class="row">
+                        <div class="col-md-4 mb-3 <?php echo (!empty($idErr)) ? 'has-error' : ''; ?>">
+                            <label for="text">ID*</label>
+                            <input type="text" name="id" class="form-control"
+                                   value="<?php echo $id; ?>">
+                            <span class="help-block"><?php echo $idErr; ?></span>
+                        </div>
+                        <div class="col-md-4 mb-3 <?php echo (!empty($precoErr)) ? 'has-error' : ''; ?>">
+                            <label for="text">Preço*</label>
+                            <input type="text" name="preco" class="form-control"
+                                   value="<?php echo $preco; ?>">
+                            <span class="help-block"><?php echo $precoErr; ?></span>
+                        </div>
+                        <div class="col-md-4 mb-3 <?php echo (!empty($quantidadeErr)) ? 'has-error' : ''; ?>">
+                            <label for="text">Quantidade*</label>
+                            <input type="text" name="quantidade" class="form-control"
+                                   value="<?php echo $quantidade; ?>">
+                            <span class="help-block"><?php echo $quantidadeErr; ?></span>
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Submeter</button>
+                    </div>
+                </form>
+            </div>
         </main>
-    </div>
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Criar Pagina</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-
-        </div>
     </div>
 </div>
 
