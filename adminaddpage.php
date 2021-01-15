@@ -12,7 +12,7 @@ if (!isset($_SESSION["cargo"]) || $_SESSION["cargo"] != "ADM" && $_SESSION["carg
 require_once "config.php";
 
 $nome = $stock = $cor = $armazenamento = $preco = $categoria =$display=$cameratras=$faceid=$processador=$sim=$bluetooth=$carregamento=$rede=$resistenciaagua=$bateria=$dimensoes=$peso=$quantidade= "";
-$nomeErr = $stockErr = $coreErr = $armazenamentoErr = $precoErr = $categoriaErr = $file_err = $file_err1 = $product_idErr = "";
+$nomeErr = $stockErr = $corErr = $armazenamentoErr = $precoErr = $categoriaErr = $file_err = $file_err1 = $product_idErr = "";
 
 $jaexiste = $jacriei ="";
 
@@ -27,9 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $find = "select produtos.nome, especificacoes.cor, especificacoes.armazenamento from produtos inner join especificacoes on produtos.id = especificacoes.product_id where produtos.nome = :nome and especificacoes.cor = :cor and especificacoes.armazenamento = :armazenamento";
         if ($look = $pdo->prepare($find)) {
-            $look->bindParam(":nome", trim($_POST["nome"]), PDO::PARAM_STR);
-            $look->bindParam(":cor", trim($_POST["cor"]), PDO::PARAM_STR);
-            $look->bindParam(":armazenamento", trim($_POST["armazenamento"]), PDO::PARAM_STR);
+            $look->bindParam(":nome", $_POST["nome"], PDO::PARAM_STR);
+            $look->bindParam(":cor", $_POST["cor"], PDO::PARAM_STR);
+            $look->bindParam(":armazenamento", $_POST["armazenamento"], PDO::PARAM_STR);
             if ($look->execute()) {
                 if ($look->rowCount() == 1) {
                     $nomeErr = "Este produto já se encontra registado";
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $sqlT = "SELECT nome FROM produtos WHERE nome = :nome";
     if ($find = $pdo->prepare($sqlT)) {
-        $find->bindParam(":nome", trim($_POST["nome"]), PDO::PARAM_STR);
+        $find->bindParam(":nome", $_POST["nome"], PDO::PARAM_STR);
         if ($find->execute()) 
         {
             $fetchee1 = $find->fetch(PDO::FETCH_OBJ);

@@ -17,6 +17,7 @@ $promoLim = 0;
 $promoDesc = 0;
 $promoId = 0;
 $promoQnt = 0;
+$promoNome=0;
 
 $nomeErr = $nifErr = $moradaErr = $paisErr = $distritoErr = $zipErr = "";
 
@@ -35,53 +36,54 @@ if (isset($_POST['promocode'])) {
     $promoId = $voucher->id;
     $promoDesc = $voucher->desconto;
     $promoLim = $voucher->limite;
+    $promoNome=$voucher->nome;
 }
+if(isset($_SESSION['carrinho'])) {
+    foreach ($_SESSION['carrinho'] as $arr) {
+        $procuraStock = $pdo->prepare("select quantidade from especificacoes where product_id = :productId and cor = :cor and armazenamento = :armazenamento");
+        $procuraStock->bindParam(":productId", $arr['id'], PDO:: PARAM_STR);
+        $procuraStock->bindParam(":cor", $arr['cor'], PDO:: PARAM_STR);
+        $procuraStock->bindParam(":armazenamento", $arr['armazenamento'], PDO:: PARAM_STR);
+        $procuraStock->execute();
+        $stock = $procuraStock->fetch(PDO::FETCH_OBJ);
 
-foreach($_SESSION['carrinho'] as $arr){
-    $procuraStock = $pdo->prepare("select quantidade from especificacoes where product_id = :productId and cor = :cor and armazenamento = :armazenamento");
-    $procuraStock->bindParam(":productId", $arr['id'], PDO:: PARAM_STR);
-    $procuraStock->bindParam(":cor", $arr['cor'], PDO:: PARAM_STR);
-    $procuraStock->bindParam(":armazenamento", $arr['armazenamento'], PDO:: PARAM_STR);
-    $procuraStock->execute();
-    $stock = $procuraStock->fetch(PDO::FETCH_OBJ);
+        $nomeproduto = $pdo->prepare("select e.preco from produtos as p inner join especificacoes as e on p.id = e.product_id where p.id = :id and e.cor = :cor and e.armazenamento = :armazenamento");
+        $nomeproduto->bindParam(":id", $arr['id'], PDO:: PARAM_STR);
+        $nomeproduto->bindParam(":cor", $arr['cor'], PDO:: PARAM_STR);
+        $nomeproduto->bindParam(":armazenamento", $arr['armazenamento'], PDO:: PARAM_STR);
+        $nomeproduto->execute();
+        $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
 
-    $nomeproduto = $pdo->prepare("select e.preco from produtos as p inner join especificacoes as e on p.id = e.product_id where p.id = :id and e.cor = :cor and e.armazenamento = :armazenamento");
-    $nomeproduto->bindParam(":id", $arr['id'], PDO:: PARAM_STR);
-    $nomeproduto->bindParam(":cor", $arr['cor'], PDO:: PARAM_STR);
-    $nomeproduto->bindParam(":armazenamento", $arr['armazenamento'], PDO:: PARAM_STR);
-    $nomeproduto->execute();
-    $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
+        if ($stock->quantidade < $arr['quantidade']) {
+            $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $stock->quantidade;
+        } else {
+            $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $arr['quantidade'];
+        }
+        $total += $_SESSION['carrinho'][$i]['preco'];
 
-    if($stock->quantidade < $arr['quantidade']){
-        $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $stock->quantidade;
-    }else{
-        $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $arr['quantidade'];
+        if ($promoLim > 0 && $arr['quantidade'] <= $promoLim && isset($_POST['promocode'])) {
+            $promo += $promoDesc * ($arr['quantidade'] * $nomeprodutof->preco);
+            $promoQnt += $arr['quantidade'];
+
+            $atualizarvoucher = $pdo->prepare("update vouchers set limite = limite - :quantidade where id = :voucherId");
+            $atualizarvoucher->bindParam(":quantidade", $arr['quantidade'], PDO:: PARAM_STR);
+            $atualizarvoucher->bindParam(":voucherId", $promoId, PDO:: PARAM_STR);
+            $atualizarvoucher->execute();
+
+        } else if ($promoLim > 0 && $arr['quantidade'] > $promoLim && isset($_POST['promocode'])) {
+            $promo += $promoDesc * ($promoLim * $nomeprodutof->preco);
+            $promoQnt += $promoLim;
+
+            $atualizarvoucher = $pdo->prepare("update vouchers set limite = 0 where id = :voucherId");
+            $atualizarvoucher->bindParam(":voucherId", $promoId, PDO:: PARAM_STR);
+            $atualizarvoucher->execute();
+        }
+
+        $total -= $promo;
+
+        $i++;
     }
-    $total += $_SESSION['carrinho'][$i]['preco'];
-
-    if($promoLim > 0 && $arr['quantidade'] <= $promoLim && isset($_POST['promocode'])){
-        $promo += $promoDesc * ($arr['quantidade'] * $nomeprodutof->preco);
-        $promoQnt += $arr['quantidade'];
-
-        $atualizarvoucher = $pdo->prepare("update vouchers set limite = limite - :quantidade where id = :voucherId");
-        $atualizarvoucher->bindParam(":quantidade", $arr['quantidade'], PDO:: PARAM_STR);
-        $atualizarvoucher->bindParam(":voucherId", $promoId, PDO:: PARAM_STR);
-        $atualizarvoucher->execute();
-
-    }else if($promoLim > 0 && $arr['quantidade'] > $promoLim && isset($_POST['promocode'])){
-        $promo += $promoDesc * ($promoLim * $nomeprodutof->preco);
-        $promoQnt += $promoLim;
-
-        $atualizarvoucher = $pdo->prepare("update vouchers set limite = 0 where id = :voucherId");
-        $atualizarvoucher->bindParam(":voucherId", $promoId, PDO:: PARAM_STR);
-        $atualizarvoucher->execute();
-    }
-
-    $total -= $promo;
-
-    $i++;
 }
-
 $_SESSION['total'] = $total;
 $_SESSION['desconto'] = $promo;
 $_SESSION['descontoQnt'] = $promoQnt;
@@ -187,25 +189,27 @@ $_SESSION['descontoQnt'] = $promoQnt;
             </h4>
             <ul class="list-group mb-3">
                 <?php
-                    foreach($_SESSION['carrinho'] as $arr){
-                        echo"<li class=\"list-group-item d-flex justify-content-between lh-condensed\">";
-                        echo"<div>";
-                        $teste=$arr['nome'];
+                if(isset($_SESSION['carrinho'])) {
+                    foreach ($_SESSION['carrinho'] as $arr) {
+                        echo "<li class=\"list-group-item d-flex justify-content-between lh-condensed\">";
+                        echo "<div>";
+                        $teste = $arr['nome'];
                         $teste1 = $arr['quantidade'];
-                        echo"<h6 class=\"my-0\">$teste (x $teste1)</h6>";
+                        echo "<h6 class=\"my-0\">$teste (x $teste1)</h6>";
                         $teste2 = $arr['cor'];
                         $teste3 = $arr['armazenamento'];
-                        echo"<small class=\"text-muted\">$teste2 $teste3 GB</small>";
-                        echo"</div>";
+                        echo "<small class=\"text-muted\">$teste2 $teste3 GB</small>";
+                        echo "</div>";
                         $teste4 = $arr['preco'];
-                        echo"<span class=\"text-muted\">$teste4 €</span>";
+                        echo "<span class=\"text-muted\">$teste4 €</span>";
                     }
+                }
                 echo"</li>";
                 ?>
                 <li class="list-group-item d-flex justify-content-between bg-light">
                     <div class="text-success">
                         <h6 class="my-0">Promo Code </h6>
-                        <small><?= $_POST['promocode'].' x'. $promoQnt ?></small>
+                        <small><?php if($promoNome!=0) $promoNome.' x'. $promoQnt ?></small>
                     </div>
                     <span class="text-success">-<?= $promo ?>€</span>
                 </li>

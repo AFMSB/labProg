@@ -166,7 +166,7 @@ if (!empty($_POST['mensagem'])) {
                             <form class="form-signin"
                                 action="<?php echo ("/projetolab/adminmessagesconversation.php?user=".$user); ?>"
                                 method="post">
-                                <input type="text" name="mensagem" placeholder="Escreva a sua mensagem"
+                                <input type="text" name="mensagem" id="conversa" placeholder="Escreva a sua mensagem"
                                     class="form-control">
                                 <button class="msg_send_btn" type="submit"><i class="fa fa-paper-plane-o"
                                         aria-hidden="true"></i></button>

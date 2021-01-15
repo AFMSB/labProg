@@ -33,7 +33,7 @@ $rs1 = $pdo->query("select especificacoes.id, especificacoes.id as espid, produt
 $id = $preco = $quantidade = "";
 $idErr = $precoErr = $quantidadeErr = "";
 
-if (empty(trim($_POST["id"]))) {
+if (empty($_POST["id"])) {
     $idErr = "Introduza o id do produto que pretende editar";
 } else {
     $sql = "SELECT id FROM especificacoes WHERE id = :id";
@@ -51,7 +51,7 @@ if (empty(trim($_POST["id"]))) {
     }
 }
 
-if(empty(trim($_POST['preco']))){
+if(empty($_POST['preco'])){
     $precoErr = "Introduza o preço do produto";
 }elseif (!is_numeric(trim($_POST['preco']))){
     $precoErr = "Preço tem de ser um valor numerico";
@@ -61,7 +61,7 @@ if(empty(trim($_POST['preco']))){
 
 //if (!is_numeric(trim($_POST['quantidade'])))echo var_export($_POST['quantidade'], true) . " is numeric", PHP_EOL;
 
-if(empty(trim($_POST['quantidade']))){
+if(empty($_POST['quantidade'])){
     $quantidadeErr = "Introduza o stock do produto";
 }elseif (!is_numeric(trim($_POST['quantidade']))){
     $quantidadeErr = "quantidade tem de ser um valor numerico";

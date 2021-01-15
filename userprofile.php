@@ -19,9 +19,24 @@ $id = $_SESSION["id"];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // validar email
+    $emailv = "SELECT  *FROM users WHERE email = :email";
     if (empty(trim($_POST["email"]))) {
         $emailErr = "Introduza um e-mail";
-    }else {
+    }
+
+    else if ($stmt = $pdo->prepare($emailv)) {
+        $stmt->bindParam(":email", $param_email, PDO::PARAM_STR);
+        $param_email = trim($_POST["email"]);
+        if ($stmt->execute()) {
+            if ($stmt->rowCount() == 1 && $_POST["email"]!=$_SESSION["email"]) {
+                $emailErr = "Este email já se encontra registado";
+            } else {
+                $email = trim($_POST["email"]);
+            }
+        }
+        unset($stmt);
+    }
+    else {
         $param_email = trim($_POST["email"]);
     }
 
@@ -44,11 +59,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validar NIF
+    $nifv = "SELECT  *FROM users WHERE nif = :nif";
     if (empty(trim($_POST["nif"]))) {
         $nifErr = "Introduza um NIF";
     } elseif (strlen(trim($_POST["nif"])) < 9) {
         $nifErr = "Numero de contribuinte inserido é invalido";
-    } else {
+    }
+    else if ($stmt = $pdo->prepare($nifv)) {
+        $stmt->bindParam(":nif", $param_nif, PDO::PARAM_STR);
+        $param_nif = trim($_POST["nif"]);
+        if ($stmt->execute()) {
+            if ($stmt->rowCount() == 1&& $_POST["nif"]!=$_SESSION["nif"]) {
+                $nifErr = "Este nif já se encontra registado";
+            } else {
+                $nif = trim($_POST["nif"]);
+            }
+        }
+        unset($stmt);
+    }
+    else {
         $param_nif = trim($_POST["nif"]);
     }
 
@@ -172,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="usermessages.php">
+                        <a class="nav-link" href="usermessages.php#conversa">
                             <span data-feather="layers"></span>
                             Mensagens
                         </a>

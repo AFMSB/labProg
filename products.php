@@ -128,7 +128,9 @@ $_SESSION["last"] = "products.php";
 
             $maiscaro = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco desc");
             $maisbarato = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco asc");
-            $rs1 = $_POST["filtro"] == "maiscaro" ? $maisbarato : $maiscaro;
+            if(isset($_POST["filtro"]))$filtro=$_POST["filtro"] =="maiscaro" ? $maisbarato : $maiscaro;
+            else $filtro=$maisbarato;
+            $rs1 =$filtro;
             while ($row1 = $rs1->fetch(PDO::FETCH_OBJ)) {
                 $stmt2 = $pdo->prepare("select caminho from imagens where produto_id = ? order by rand() limit 1");
                 $stmt2->execute(array($row1->id));

@@ -14,7 +14,7 @@ require_once "config.php";
 $categoria = $desconto = $nome = $limite = "";
 $categoriaErr = $descontoErr = $nomeErr = $limiteErr = "";
 
-if (empty(trim($_POST["nome"]))) {
+if (empty($_POST["nome"])) {
     $nomeErr = "Introduza um nome para o voucher";
 } else {
     $sql = "SELECT id FROM vouchers WHERE nome = :nome";
@@ -32,7 +32,7 @@ if (empty(trim($_POST["nome"]))) {
     }
 }
 
-if(empty(trim($_POST['categoria']))){
+if(empty($_POST['categoria'])){
     $categoriaErr = "Introduza a categoria do desconto";
 }elseif (strlen(trim($_POST['categoria']))>50){
     $categoriaErr = "Categoria não pode ter mais de 50 caracteres";
@@ -40,7 +40,7 @@ if(empty(trim($_POST['categoria']))){
     $categoria = trim($_POST["categoria"]);
 }
 
-if(empty(trim($_POST['desconto']))){
+if(empty($_POST['desconto'])){
     $descontoErr = "Introduza a categoria do desconto";
 }elseif (!is_numeric(trim($_POST['desconto']))){
     $descontoErr = "Desconto tem de ser um valor numerico";
@@ -48,7 +48,7 @@ if(empty(trim($_POST['desconto']))){
     $desconto = trim($_POST["desconto"]);
 }
 
-if(empty(trim($_POST['limite']))){
+if(empty($_POST['limite'])){
     $limiteErr = "Introduza o limite de usos do desconto";
 }elseif (!is_numeric(trim($_POST['limite']))){
     $limiteErr = "Limite tem de ser um valor numerico";
@@ -188,9 +188,6 @@ if (empty($nomeErr)) {
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="margin-top: 5vh;">
             <h2>Criar Cupão</h2>
-            <?php
-                print_r($_POST);
-            ?>
             <div class="container-fluid">
                 <form class="form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <div class="row">

@@ -1,6 +1,5 @@
 <?php
 session_start();
-session_start();
 if (isset($_SESSION["cargo"]) && isset($_SESSION["temp"])) {
     header("location: reset-password.php");
     exit;
@@ -97,7 +96,7 @@ $rs1 = $pdo->query("select *from encomenda_produto where encomenda_id = $paramId
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="usermessages.php">
+                            <a class="nav-link" href="usermessages.php#conversa">
                                 <span data-feather="layers"></span>
                                 Mensagens
                             </a>

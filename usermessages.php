@@ -93,7 +93,7 @@ if (!empty($_POST['mensagem'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="usermessages.php">
+                        <a class="nav-link active" href="usermessages.php#conversa">
                             <span data-feather="layers"></span>
                             Mensagens
                         </a>
@@ -130,6 +130,7 @@ if (!empty($_POST['mensagem'])) {
                     }
                     ?>
                 </div>
+                <section class="page-section" id="conversa">
                 <div class="type_msg" style="margin-top: 10vh;">
                     <a class="input_msg_write">
                         <form class="form-signin" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"
@@ -140,6 +141,7 @@ if (!empty($_POST['mensagem'])) {
                         </form>
                     </a>
                 </div>
+                </section>
             </div>
     </div>
     </main>

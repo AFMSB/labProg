@@ -92,7 +92,7 @@ $rs1 = $pdo->query("SELECT * FROM encomenda WHERE user_id = $paramId LIMIT $shif
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="usermessages.php">
+                        <a class="nav-link" href="usermessages.php#conversa">
                             <span data-feather="layers"></span>
                             Mensagens
                         </a>

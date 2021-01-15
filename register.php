@@ -65,11 +65,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Validar NIF
+    $nifv = "SELECT  *FROM users WHERE nif = :nif";
     if (empty(trim($_POST["nif"]))) {
         $nifErr = "Introduza um NIF";
     } elseif (strlen(trim($_POST["nif"])) < 9) {
         $nifErr = "Numero de contribuinte inserido é invalido";
-    } else {
+    }
+    else if ($stmt = $pdo->prepare($nifv)) {
+        $stmt->bindParam(":nif", $param_nif, PDO::PARAM_STR);
+        $param_nif = trim($_POST["nif"]);
+        if ($stmt->execute()) {
+            if ($stmt->rowCount() == 1) {
+                $nifErr = "Este nif já se encontra registado";
+            } else {
+                $nif = trim($_POST["nif"]);
+            }
+        }
+        unset($stmt);
+    }
+    else {
         $param_nif = trim($_POST["nif"]);
     }
 

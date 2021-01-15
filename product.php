@@ -11,20 +11,22 @@ $nomeproduto = $pdo->prepare("select nome from produtos where id = :produtoID");
 $nomeproduto->bindParam(":produtoID", $product, PDO:: PARAM_STR);
 $nomeproduto->execute();
 $nomeprodutof = $nomeproduto->fetch(PDO::FETCH_OBJ);
-
+$found =false;
 if (isset($_POST['armazenamento']) && isset($_POST['quantidade']) && $_POST['armazenamento'] != 'armazenamento' && $_POST['quantidade'] > 0) {
     $pieces = explode("+", $_POST['armazenamento']);
 
     $index = 0;
-    foreach ($_SESSION['carrinho'] as $a) {
-        $pieces = explode("+", $_POST['armazenamento']);
-        echo $_SESSION['carrinho'][$index]['cor'] . "  " . $_SESSION['carrinho'][$index]['armazenamento'];
-        if ($_SESSION['carrinho'][$index]['cor'] == $pieces[1] && $_SESSION['carrinho'][$index]['armazenamento'] == $pieces[0] && $_SESSION['carrinho'][$index]['id'] == $product) {
-            $_SESSION['carrinho'][$index]['quantidade'] += $_POST['quantidade'];
-            $found = true;
-            break;
+    if(isset($_SESSION['carrinho'])) {
+        foreach ($_SESSION['carrinho'] as $a) {
+            $pieces = explode("+", $_POST['armazenamento']);
+            echo $_SESSION['carrinho'][$index]['cor'] . "  " . $_SESSION['carrinho'][$index]['armazenamento'];
+            if ($_SESSION['carrinho'][$index]['cor'] == $pieces[1] && $_SESSION['carrinho'][$index]['armazenamento'] == $pieces[0] && $_SESSION['carrinho'][$index]['id'] == $product) {
+                $_SESSION['carrinho'][$index]['quantidade'] += $_POST['quantidade'];
+                $found = true;
+                break;
+            }
+            $index++;
         }
-        $index++;
     }
 
     if (!$found){
@@ -187,15 +189,20 @@ if (isset($_POST['armazenamento']) && isset($_POST['quantidade']) && $_POST['arm
                 <div class="col">
                     <?php
                     //print_r($_POST);
-                    $spcs = explode("+", $_POST['armazenamento']);
+                    if(isset($_POST["armazenamento"]))$armazenamento=$_POST["armazenamento"];
+                    else $armazenamento=0;
+                    $spcs = explode("+",$armazenamento);
                     $rs4 = $pdo->prepare("select preco from especificacoes where product_id = :product and cor = :cor and armazenamento = :armazenamento");
                     $rs4->bindParam(":product", $product, PDO:: PARAM_STR);
                     $rs4->bindParam(":cor", $spcs[1], PDO:: PARAM_STR);
                     $rs4->bindParam(":armazenamento", $spcs[0], PDO:: PARAM_STR);
-                    $quantidade = $_POST['quantidade'];
+                    if(isset($_POST["quantidade"]))$quantidade=$_POST["quantidade"];
+                    else $quantidade=0;
                     if ($rs4->execute()) {
-                        $row4 = $rs4->fetch(PDO::FETCH_OBJ);
-                            echo "<h2>".$row4->preco."€</h2>";
+                        if ($rs4->rowCount() != 0) {
+                            $row4 = $rs4->fetch(PDO::FETCH_OBJ);
+                            echo "<h2>" . $row4->preco . "€</h2>";
+                        }
                     }
                     ?>
                 </div>
