@@ -135,7 +135,8 @@ require_once "config.php";
                         $row2 = $rs2->fetch(PDO::FETCH_OBJ);
                         $rs3 = $pdo->query("select *from mensagens where emmisor_id = $idSel order by data desc limit 1;");
                         $row3 = $rs3->fetch(PDO::FETCH_OBJ);
-                        if(0) echo("<a href=\"adminmessagesconversation.php?user=$idSel#conversa\" class=\"list-group-item list-group-item-action active\">");
+                        $rs4 = $pdo->query("select *from mensagens where emmisor_id = $idSel and visto = 0;");
+                        if(($num = $rs4->rowCount()) >= 1) echo("<a href=\"adminmessagesconversation.php?user=$idSel#conversa\" class=\"list-group-item list-group-item-action active\">");
                         else echo("<a href=\"adminmessagesconversation.php?user=$idSel#conversa\" class=\"list-group-item list-group-item-action\">");
                         echo("<div class=\"d-flex w-100 justify-content-between\">");
                         echo("<h5 class=\"mb-1\"> $row2->nome </h5>");
@@ -143,7 +144,7 @@ require_once "config.php";
                         echo("</div>");
                         echo("<div class=\"d-flex w-100 justify-content-between\">");
                         echo("<p class=\"mb-1\">$row3->mensagem</p>");
-                        //echo("<span class=\"badge badge-danger badge-pill\">14</span>");
+                        if($num != 0) echo("<span class=\"badge badge-danger badge-pill\">$num</span>");
                         echo("</div>");
                         echo("</a>");
                     }

@@ -13,6 +13,11 @@ require_once "config.php";
 
 $user = $_GET["user"];
 
+if (empty($_POST['mensagem'])) {
+    $marcarLida = $pdo->prepare("update mensagens set visto = 1 where emmisor_id = ?");
+    $marcarLida->execute(array($user));
+}
+
 if (!empty($_POST['mensagem'])) {
     $inserirMensagem = $pdo->prepare("INSERT INTO mensagens (emmisor_id, recetor_id, mensagem) values(?, ?, ?)");
     $inserirMensagem->execute(array(18, $user, $_POST["mensagem"]));
@@ -164,7 +169,7 @@ if (!empty($_POST['mensagem'])) {
                     <div class="type_msg" style="margin-top: 10vh;">
                         <a class="input_msg_write">
                             <form class="form-signin"
-                                action="<?php echo ("/projetolab/adminmessagesconversation.php?user=".$user); ?>"
+                                action="<?php echo ("/projetolab1/adminmessagesconversation.php?user=".$user); ?>"
                                 method="post">
                                 <input type="text" name="mensagem" id="conversa" placeholder="Escreva a sua mensagem"
                                     class="form-control">

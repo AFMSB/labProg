@@ -18,6 +18,7 @@ $promoDesc = 0;
 $promoId = 0;
 $promoQnt = 0;
 $promoNome=0;
+$erroCheck = "";
 
 $nomeErr = $nifErr = $moradaErr = $paisErr = $distritoErr = $zipErr = "";
 
@@ -56,6 +57,7 @@ if(isset($_SESSION['carrinho'])) {
 
         if ($stock->quantidade < $arr['quantidade']) {
             $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $stock->quantidade;
+            $erroCheck = "Alguns dos produtos selecionados não estão disponiveis nas quantidades pretendidas!";
         } else {
             $_SESSION['carrinho'][$i]['preco'] = $nomeprodutof->preco * $arr['quantidade'];
         }
@@ -213,6 +215,11 @@ $_SESSION['descontoQnt'] = $promoQnt;
                     </div>
                     <span class="text-success">-<?= $promo ?>€</span>
                 </li>
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-danger">
+                        <small><?= $erroCheck?></small>
+                    </div>
+                </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total (EUR)</span>
                     <?php echo"<strong>$total €</strong>"?>
@@ -286,7 +293,7 @@ $_SESSION['descontoQnt'] = $promoQnt;
     var checkoutButton = document.getElementById("checkout-button");
 
     checkoutButton.addEventListener("click", function () {
-        fetch("http://homestead.test/projetolab/create-checkout-session.php", {
+        fetch("http://homestead.test/projetolab1/create-checkout-session.php", {
             method: "POST",
         })
             .then(function (response) {

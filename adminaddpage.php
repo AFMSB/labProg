@@ -253,6 +253,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="adminvouchers.php">
+                                <span data-feather="layers"></span>
+                                Vouchers
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="adminorders.php">
                                 <span data-feather="file"></span>
                                 Encomendas

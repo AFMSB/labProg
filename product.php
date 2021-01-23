@@ -134,7 +134,7 @@ if (isset($_POST['armazenamento']) && isset($_POST['quantidade']) && $_POST['arm
             </div>
         </div>
         <div class="col">
-            <form class="form" action="<?php echo("/projetolab/product.php?product=" . $product); ?>" method="post">
+            <form class="form" action="<?php echo("/projetolab1/product.php?product=" . $product); ?>" method="post">
                 <h3><?= $nomeprodutof->nome?></h3>
                 <p>Cor</p>
                 <div class="row " style="margin-top: 20px;">

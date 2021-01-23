@@ -36,6 +36,12 @@ $_SESSION["last"] = "products.php";
                 font-size: 3.5rem;
             }
         }
+
+        .img-fluid {
+            width: 100%;
+            height: 15vw;
+            object-fit: cover;
+        }
     </style>
 </head>
 
@@ -125,7 +131,6 @@ $_SESSION["last"] = "products.php";
         </div>
         <div class="row">
             <?php
-
             $maiscaro = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco desc");
             $maisbarato = $pdo->query("select produtos.id, produtos.nome, especificacoes.armazenamento, especificacoes.preco from produtos inner join especificacoes on produtos.id = especificacoes.product_id order by especificacoes.preco asc");
             if(isset($_POST["filtro"]))$filtro=$_POST["filtro"] =="maiscaro" ? $maisbarato : $maiscaro;

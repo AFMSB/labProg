@@ -7,7 +7,7 @@ require 'vendor/autoload.php';
 
 header('Content-Type: application/json');
 
-$YOUR_DOMAIN = 'http://homestead.test/projetolab';
+$YOUR_DOMAIN = 'http://homestead.test/projetolab1';
 
 $valor = $_SESSION['total'] * 100;
 
